@@ -1,6 +1,6 @@
 <?php
-// require_once 'config/Connection.php';
-use Config\Database;
+require_once 'config/Connection.php';
+// use Config\Connection;
 
 $database = new Connection();
 $db = $database->getConnection();
