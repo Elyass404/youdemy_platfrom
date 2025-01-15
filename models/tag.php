@@ -1,10 +1,9 @@
 <?php
-namespace Controllers;
-use Controllers\crud;
+namespace Models;
+use Models\crud;
 use PDO;
 use PDOException;
-
-require_once 'crud.php'; 
+ 
 
 class Tag {
     private $id;

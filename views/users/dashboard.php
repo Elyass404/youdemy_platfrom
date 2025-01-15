@@ -115,55 +115,42 @@
                 <table class="min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr class="text-left bg-gray-100">
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Name</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Email</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Role</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Status</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Actions</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">ID</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Email</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Role</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Name</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Status</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Gender</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Sample data for users -->
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-gray-800">John Doe</td>
-                            <td class="py-3 px-4 text-gray-800">john.doe@example.com</td>
-                            <td class="py-3 px-4 text-gray-800">Student</td>
-                            <td class="py-3 px-4 text-gray-800">
-                                <span class="px-2 py-1 bg-green-500 text-white text-sm rounded-full">Activated</span>
+                            <td class="py-3 px-4 text-gray-800 text-center ">31</td>
+                            <td class="py-3 px-4 text-gray-800 text-center">ilyass</td>
+                            <td class="py-3 px-4 text-gray-800 text-center">ilyass.mar@example.com</td>
+                            <td class="py-3 px-4 text-gray-800 text-center">Student</td>
+                            <td class="py-3 px-4 text-gray-800 text-center">
+                                <?php
+                                $status = "pending";
+                                if($status === "activated"):
+                                ?>
+                                <span class="px-2 py-1 bg-green-500 text-white text-sm rounded-full text-center">Activated</span>
+                                <?php 
+                                elseif($status === "pending"):
+                                ?>
+                                <span class="px-2 py-1 bg-orange-500 text-white text-sm rounded-full text-center">Activated</span>
+                                <?php endif; ?>
                             </td>
-                            <td class="py-3 px-4 text-gray-800">
+                            <td class="py-3 px-4 text-gray-800">Male</td>
+                            <td class="py-3 px-4 text-gray-800 text-center">
                                 <a href="#" class="text-blue-600 hover:underline mr-3">Activate</a>
                                 <a href="#" class="text-yellow-600 hover:underline mr-3">Suspend</a>
                                 <a href="#" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="py-3 px-4 text-gray-800">Jane Smith</td>
-                            <td class="py-3 px-4 text-gray-800">jane.smith@example.com</td>
-                            <td class="py-3 px-4 text-gray-800">Teacher</td>
-                            <td class="py-3 px-4 text-gray-800">
-                                <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded-full">Pending</span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-800">
-                                <a href="#" class="text-blue-600 hover:underline mr-3">Activate</a>
-                                <a href="#" class="text-yellow-600 hover:underline mr-3">Suspend</a>
-                                <a href="#" class="text-red-600 hover:underline">Delete</a>
-                            </td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-3 px-4 text-gray-800">Emily Johnson</td>
-                            <td class="py-3 px-4 text-gray-800">emily.johnson@example.com</td>
-                            <td class="py-3 px-4 text-gray-800">Admin</td>
-                            <td class="py-3 px-4 text-gray-800">
-                                <span class="px-2 py-1 bg-green-500 text-white text-sm rounded-full">Activated</span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-800">
-                                <a href="#" class="text-blue-600 hover:underline mr-3">Activate</a>
-                                <a href="#" class="text-yellow-600 hover:underline mr-3">Suspend</a>
-                                <a href="#" class="text-red-600 hover:underline">Delete</a>
-                            </td>
-                        </tr>
-                        <!-- More user rows can be added here -->
+
                     </tbody>
                 </table>
             </div>
