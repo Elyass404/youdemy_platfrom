@@ -1,0 +1,18 @@
+{
+    "name": "hp/youdemy_platfrom",
+    "autoload": {
+        "psr-4": {
+            "Config\\": "config/",
+            "Controllers\\": "controllers/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ilyass mar",
+            "email": "ilyass.marghine@edu.uiz.ac.ma"
+        }
+    ],
+    "require": {
+         "vlucas/phpdotenv": "^5.6"
+    }
+}
