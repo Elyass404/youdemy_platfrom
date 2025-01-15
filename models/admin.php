@@ -1,11 +1,12 @@
 <?php
 namespace Models;
 use Models\crud;
+use Models\User;
 use PDO;
 use PDOException;
 
 
-class Admin {
+class Admin extends User {
     private $crud;
 
     // Constructor to initialize the CRUD object

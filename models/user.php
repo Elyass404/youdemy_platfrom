@@ -19,17 +19,9 @@ class User {
     protected $birthdate;
     protected $crud;
 
-    public function __construct($db, $data = []) {
+    public function __construct($db) {
         $this->crud = new CRUD($db);
 
-        $this->name = $data['name'] ?? null;
-        $this->email = $data['email'] ?? null;
-        $this->password = $data['password'] ?? null;
-        $this->role = $data['role'] ?? null;  
-        $this->profilePhoto = $data['photo'] ?? null;
-        $this->gender = $data['gender'] ?? null;
-        $this->bio = $data['bio'] ?? null;
-        $this->birthdate = $data['birthdate'] ?? null;
     }
 
     public function register($data) {
@@ -39,19 +31,26 @@ class User {
         return $this->crud->create($data, 'users');
     }
 
-    public function login() {
+    public function login($email,$password) {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->crud->conn->prepare($query);
-        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($this->password, $user['password'])) {
+        if ($user && password_verify($password, $user['password'])) {
             // Start session 
             session_start();
             $_SESSION['id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
             $this->id = $user['id']; 
+
+            if($_SESSION['role'] == "Admin" || $_SESSION['role'] == "Teacher" ){
+                header("Location: views/users/dashboard.php");
+                exit;
+            }elseif($_SESSION['role'] == "Student "){
+                // header("Location: views/users/courses_catalog.php");
+            }
             return true;
         }
         return false;
