@@ -28,17 +28,17 @@ $userData = [
 
 
 $courseData = [
-    "title" => 'How to Program', 
-    "description" => 'This is just a short course to intialize the database', 
+    "title" => 'How to eat an apple', 
+    "description" => 'This course will teach you how to eat apple effectively', 
     "featured_image" => "https://images.unsplash.com/profile-1700009111141-05e9502e95c4image?w=150&dpr=1&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", 
     "category_id" =>'1', 
     "teacher_id" => '1', 
-    "content" => 'student'
+    "video_content" => 'video_url'
 ];
 
 
 
-$course->createByDocument($courseData,[1,2]);
+$course->createByVideo($courseData,[1,3],"video");
 // $courses=$course->read();
 
 // var_dump ($courses);

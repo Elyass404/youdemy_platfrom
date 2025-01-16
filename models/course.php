@@ -54,7 +54,26 @@ class Course {
     }
     
 
+    public function createByVideo($data, $tags = [],$type) {
+        $query = "
+            INSERT INTO courses 
+            (title, description, featured_image, category_id, teacher_id, content, video_content)
+            VALUES (:title, :description, :featured_image, :category_id, :teacher_id, NULL, :video_content)
+        ";
     
+        $stmt = $this->db->prepare($query);
+    
+        // Bind the parameters
+        $stmt->bindParam(':title', $data['title']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':featured_image', $data['featured_image']);
+        $stmt->bindParam(':category_id', $data['category_id']);
+        $stmt->bindParam(':teacher_id', $data['teacher_id']);
+        $stmt->bindParam(':video_content', $data['video_content']);
+    
+        $result = $stmt->execute();
+        return $result;
+    }
 
     public function read($conditions = []) {
         $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
