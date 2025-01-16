@@ -30,7 +30,7 @@ class Course {
         return $result;
     }
 
-    public static function read($db,$conditions = []) {
+    public function read($conditions = []) {
         $query = "SELECT *, courses.id  , users.name as name  , categories.name as category_name 
         FROM courses
         JOIN users ON users.id = courses.author_id
@@ -40,7 +40,7 @@ class Course {
                 return "$key = :$key";
             }, array_keys($conditions)));
         }
-        $stmt = $db->prepare($query);
+        $stmt = $this->crud->prepare($query);
 
         foreach ($conditions as $key => &$val) {
             $stmt->bindParam(":$key", $val);
@@ -128,3 +128,50 @@ class Course {
 
 }
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

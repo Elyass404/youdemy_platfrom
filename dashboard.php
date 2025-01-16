@@ -5,6 +5,7 @@ use Config\Connection;
 use Models\Category;
 use Models\Tag;
 use Models\User;
+use Models\Course;
 
 $database = new Connection();
 $db = $database->getConnection();
@@ -12,6 +13,7 @@ $db = $database->getConnection();
 $category = new Category($db);
 $tag = new Tag($db);
 $user = new User($db);
+$course = new Course($db);
 $userData = [
     'name' => 'imran',
     'email' => 'imran@example.com',
@@ -24,21 +26,37 @@ $userData = [
     'birthdate' => '2008-12-02'
 ];
 
-// $user->register($userData);
-$email="imran@example.com";
-$password="barca";
-if($user->login($email,$password)){
-    if ($_SESSION['role']=== "Admin"){
-        echo "you are an admin!";
-    }elseif($_SESSION['role']==="teacher"){
-        echo "you are a teacher!";
 
-    }else{
-        echo "you are a student!";
-    }
+$courseData = [
+    'title' => 'imran',
+    'description' => 'imran@example.com',
+    'category_id' => '1',
+    'content' => 'student',
+    'featured_image' => "https://images.unsplash.com/profile-1700009111141-05e9502e95c4image?w=150&dpr=1&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+    'teacher_id' => '1'
+];
+
+
+
+// $course->create($courseData,[1,2]);
+$course->read();
+
+// $user->register($userData);
+
+// $email="imran@example.com";
+// $password="barca";
+// if($user->login($email,$password)){
+//     if ($_SESSION['role']=== "Admin"){
+//         echo "you are an admin!";
+//     }elseif($_SESSION['role']==="teacher"){
+//         echo "you are a teacher!";
+
+//     }else{
+//         echo "you are a student!";
+//     }
     
 
-};
+// };
 
 // $user->logout();
 // if (!isset($_SESSION['role'])) {
