@@ -28,20 +28,20 @@ $userData = [
 
 
 $courseData = [
-    'title' => 'imran',
-    'description' => 'imran@example.com',
-    'category_id' => '1',
-    'content' => 'student',
-    'featured_image' => "https://images.unsplash.com/profile-1700009111141-05e9502e95c4image?w=150&dpr=1&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    'teacher_id' => '1'
+    "title" => 'How to Program', 
+    "description" => 'This is just a short course to intialize the database', 
+    "featured_image" => "https://images.unsplash.com/profile-1700009111141-05e9502e95c4image?w=150&dpr=1&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", 
+    "category_id" =>'1', 
+    "teacher_id" => '1', 
+    "content" => 'student'
 ];
 
 
 
-// $course->create($courseData,[1,2]);
-$courses=$course->read();
+$course->createByDocument($courseData,[1,2]);
+// $courses=$course->read();
 
-var_dump ($courses);
+// var_dump ($courses);
 
 // $user->register($userData);
 

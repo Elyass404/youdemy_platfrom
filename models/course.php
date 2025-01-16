@@ -33,15 +33,28 @@ class Course {
     }
 
     public function createByDocument($data, $tags = []) {
-        $query="
-                INSERT INTO cours 
-                (title, description, contenu, featured_image, category_id, teacher_id, scheduled_date, created_at, updated_at, contenu_document, contenu_video)
-                VALUES (:title, :description, :contenu, :featured_image, :category_id, :enseignant_id, :scheduled_date, NOW(), NOW(), NULL, :contenu_video)
-            "
-        }
-
+        $query = "
+            INSERT INTO courses 
+            (title, description, featured_image, category_id, teacher_id, content, video_content)
+            VALUES (:title, :description, :featured_image, :category_id, :teacher_id, :content, NULL)
+        ";
+    
+        $stmt = $this->db->prepare($query);
+    
+        // Bind the parameters
+        $stmt->bindParam(':title', $data['title']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':featured_image', $data['featured_image']);
+        $stmt->bindParam(':category_id', $data['category_id']);
+        $stmt->bindParam(':teacher_id', $data['teacher_id']);
+        $stmt->bindParam(':content', $data['content']);
+    
+        $result = $stmt->execute();
         return $result;
     }
+    
+
+    
 
     public function read($conditions = []) {
         $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
