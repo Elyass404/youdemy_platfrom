@@ -8,9 +8,11 @@ require __DIR__.'/../vendor/autoload.php';
 
 class Course {
     private $crud;
+    private $db;
 
     public function __construct($db) {
         $this->crud = new CRUD($db);
+        $this->db = $db;
     }
 
     public function create($data, $tags = []) {
@@ -30,17 +32,28 @@ class Course {
         return $result;
     }
 
+    public function createByDocument($data, $tags = []) {
+        $query="
+                INSERT INTO cours 
+                (title, description, contenu, featured_image, category_id, teacher_id, scheduled_date, created_at, updated_at, contenu_document, contenu_video)
+                VALUES (:title, :description, :contenu, :featured_image, :category_id, :enseignant_id, :scheduled_date, NOW(), NOW(), NULL, :contenu_video)
+            "
+        }
+
+        return $result;
+    }
+
     public function read($conditions = []) {
-        $query = "SELECT *, courses.id  , users.name as name  , categories.name as category_name 
+        $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
         FROM courses
-        JOIN users ON users.id = courses.author_id
+        JOIN users ON users.id = courses.teacher_id
         JOIN categories ON categories.id = courses.category_id " ;
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", array_map(function($key) {
                 return "$key = :$key";
             }, array_keys($conditions)));
         }
-        $stmt = $this->crud->prepare($query);
+        $stmt = $this->db->prepare($query);
 
         foreach ($conditions as $key => &$val) {
             $stmt->bindParam(":$key", $val);

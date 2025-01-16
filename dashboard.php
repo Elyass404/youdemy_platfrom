@@ -39,7 +39,9 @@ $courseData = [
 
 
 // $course->create($courseData,[1,2]);
-$course->read();
+$courses=$course->read();
+
+var_dump ($courses);
 
 // $user->register($userData);
 
