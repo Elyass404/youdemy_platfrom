@@ -15,22 +15,6 @@ class Course {
         $this->db = $db;
     }
 
-    public function create($data, $tags = []) {
-        // insert the course into the courses table
-        $result = $this->crud->create($data, 'courses');
-
-        if ($result) {
-            // get the last inserted course ID
-            $courseId = $this->crud->conn->lastInsertId();
-
-         // insert the tags into the course_tags table
-            foreach ($tags as $tagId) {
-                $this->crud->create(['course_id' => $courseId, 'tag_id' => $tagId], 'course_tags');
-            }
-        }
-
-        return $result;
-    }
 
     public function createByDocument($data, $tags = []) {
         $query = "
@@ -94,6 +78,30 @@ class Course {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+
+    public function readDocumentCourse($conditions = []) {
+        $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
+        FROM courses
+        JOIN users ON users.id = courses.teacher_id
+        JOIN categories ON categories.id = courses.category_id " ;
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", array_map(function($key) {
+                return "$key = :$key";
+            }, array_keys($conditions)));
+        }
+        $stmt = $this->db->prepare($query);
+
+        foreach ($conditions as $key => &$val) {
+            $stmt->bindParam(":$key", $val);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
 
     public function update($data, $conditions, $tags = []) {
         //   update the course in the courses table
@@ -167,6 +175,19 @@ class Course {
         $stmt->execute();  
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+        }
+
+
+        public function __call($name, $args) {
+            if ($name === "create") {
+                if (count($args) === 2) {
+                    return $this->createByDocument($args[0],$args[1]);
+                } elseif (count($args) === 3) {
+                    return $this->createByVideo($args[0], $args[1],$args[2]);
+                } else {
+                    throw new Exception("Invalid number of arguments for create method.");
+                }
+            } 
         }
 
 
