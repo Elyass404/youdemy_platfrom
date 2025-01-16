@@ -7,6 +7,7 @@ use Models\Tag;
 use Models\User;
 use Models\Course;
 
+
 $database = new Connection();
 $db = $database->getConnection();
 
@@ -14,6 +15,8 @@ $category = new Category($db);
 $tag = new Tag($db);
 $user = new User($db);
 $course = new Course($db);
+
+
 $userData = [
     'name' => 'imran',
     'email' => 'imran@example.com',
@@ -28,17 +31,18 @@ $userData = [
 
 
 $courseData = [
-    "title" => 'Learn OOP in HTML', 
-    "description" => 'This course will make you master the OOP using HTML ', 
+    "title" => 'Learn divs in HTML', 
+    "description" => 'This you master the OOP using HTML ', 
     "featured_image" => "https://images.unsplash.com/profile-1700009111141-05e9502e95c4image?w=150&dpr=1&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", 
     "category_id" =>'2', 
     "teacher_id" => '1', 
-    "video_content" => 'video_url'
+    "content" => 'this is a text course'
 ];
 
 
 
-$course->create($courseData,[1,2],"video");
+$course->createByDocument($courseData,[1,2]);
+
 // $courses=$course->read();
 
 // var_dump ($courses);

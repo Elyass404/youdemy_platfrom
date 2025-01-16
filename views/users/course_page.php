@@ -1,3 +1,29 @@
+<?php
+use Config\Connection;
+use Models\Course;
+require __DIR__.'/../../vendor/autoload.php'; 
+
+$database = new Connection();
+$db = $database->getConnection();
+
+if(isset ($_GET['id'])){
+    echo ($_GET['id']);
+
+};
+
+echo "hello";
+$courseObj = new Course($db);
+$course = $courseObj->read($_GET['id']);
+
+echo $course[0]['name'];
+
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

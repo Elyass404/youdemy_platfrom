@@ -59,21 +59,22 @@ class Course {
         return $result;
     }
 
-    public function read($conditions = []) {
-        $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
+    public function read($id) {
+        $query = "SELECT courses.*,  users.name as name  , categories.category_name  as category_name 
         FROM courses
         JOIN users ON users.id = courses.teacher_id
-        JOIN categories ON categories.id = courses.category_id " ;
-        if (!empty($conditions)) {
-            $query .= " WHERE " . implode(" AND ", array_map(function($key) {
-                return "$key = :$key";
-            }, array_keys($conditions)));
-        }
+        JOIN categories ON categories.id = courses.category_id
+        where courses.id = $id" ;
+        // if (!empty($conditions)) {
+        //     $query .= " WHERE " . implode(" AND ", array_map(function($key) {
+        //         return "$key = :$key";
+        //     }, array_keys($conditions)));
+        // }
         $stmt = $this->db->prepare($query);
 
-        foreach ($conditions as $key => &$val) {
-            $stmt->bindParam(":$key", $val);
-        }
+        // foreach ($conditions as $key => &$val) {
+        //     $stmt->bindParam(":$key", $val);
+        // }
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
