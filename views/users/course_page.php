@@ -1,19 +1,21 @@
 <?php
 use Config\Connection;
 use Models\Course;
+use Models\Tag;
 require __DIR__.'/../../vendor/autoload.php'; 
 
 $database = new Connection();
 $db = $database->getConnection();
 
 if(isset ($_GET['id'])){
-    echo ($_GET['id']);
+    $courseId = ($_GET['id']);
 
 };
 
 echo "hello";
 $courseObj = new Course($db);
-$course = $courseObj->read(["courses.id" => 1]);
+
+$course = $courseObj->read(["courses.id" => $courseId]);
 
 var_dump($course['name']);
 
@@ -66,15 +68,18 @@ var_dump($course['name']);
 
         <!-- Course Information -->
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4">Course Title</h2>
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4"><?= $course['title']?></h2>
             <img src="course-featured-image.jpg" alt="Course Featured Image" class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
             
             <!-- Tags and Category -->
             <div class="flex justify-center space-x-4 mb-4">
-                <span class="px-4 py-2 bg-blue-600 text-white rounded-full">Category Name</span>
-                <span class="px-4 py-2 bg-gray-600 text-white rounded-full">Tag 1</span>
-                <span class="px-4 py-2 bg-gray-600 text-white rounded-full">Tag 2</span>
-                <span class="px-4 py-2 bg-gray-600 text-white rounded-full">Tag 3</span>
+                <span class="px-4 py-2 bg-blue-600 text-white rounded-full"><?= $course['category_name']?></span>
+                <?php 
+                $getTags = tag::getTags($courseId,$db);
+                                                
+                foreach ($getTags as $tag): ?>
+                <span class="px-4 py-2 bg-gray-600 text-white rounded-full"><?=$tag['name']?></span>
+                <?php endforeach ;?>
             </div>
 
             <!-- Horizontal Alignment for Course Information -->

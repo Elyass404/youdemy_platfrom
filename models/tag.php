@@ -47,9 +47,10 @@ class Tag {
     }
 
     public static function getTags($id,$db){
-        $query = "SELECT tags.name as name FROM tags
-        JOIN article_tags ON tags.id = article_tags.tag_id
-        WHERE article_id = :id";
+        $query = "SELECT tags.tag_name as name
+        FROM tags
+        JOIN course_tags ON tags.id = course_tags.tag_id
+        WHERE course_id = :id";
         $stmt = $db->prepare($query);
         $stmt->bindParam(":id",$id);
         $stmt->execute();
