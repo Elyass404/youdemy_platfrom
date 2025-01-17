@@ -1,4 +1,10 @@
 
+<?php
+session_start();
+$_SESSION["name"]="elyass";
+// session_unset();
+// session_destroy();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

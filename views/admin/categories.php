@@ -1,4 +1,13 @@
 <?php
+session_start();
+
+if(isset($_SESSION["name"])){
+   
+    echo "you are loged in Mr.".$_SESSION['name'];
+}else{
+    echo "You should not be in this page, Get OUT!!!";
+    header("Location: shouldLog.php");
+}
 use Config\Connection;
 use Models\Course;
 use Models\Category;
@@ -13,6 +22,7 @@ $categories = $categoryObj->read();
 
 
 var_dump($categories[0]);
+print_r($_SESSION);
 
 
 
@@ -83,7 +93,7 @@ var_dump($categories[0]);
                             <td class="py-3 px-4 text-gray-800 text-center"><?= $category["category_name"]?></td>
                             <td class="py-3 px-4 text-gray-800 text-center">
                                 <a href="/admin/Categories/edit/1" class="text-yellow-600 hover:underline mr-3">Edit</a>
-                                <a href="/admin/Categories/delete/1" class="text-red-600 hover:underline">Delete</a>
+                                <a href="../../controllers/deleteCategoryCtrl.php?id=<?= $category["id"]?>" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -76,3 +76,17 @@ ALTER TABLE courses
 ADD COLUMN course_type ENUM('Video', 'Document');
 
 
+-- Drop the existing foreign key constraint
+ALTER TABLE courses
+DROP FOREIGN KEY courses_ibfk_1;
+
+-- Add a new foreign key constraint with ON DELETE SET NULL
+ALTER TABLE courses
+ADD CONSTRAINT courses_setnull 
+FOREIGN KEY (category_id) REFERENCES categories(id)
+ON DELETE SET NULL;
+
+--Changing the FOREIGN EY to accept null values , because when deleting a category in the categories table
+--the course should stay without deleting, even if the category doesnt exist 
+ALTER TABLE courses
+MODIFY category_id INT NULL;
