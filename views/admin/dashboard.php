@@ -10,17 +10,21 @@
 <body class="bg-gray-100">
 
     <!-- Sidebar (Navigation) -->
-    <div class="flex">
-        <div class="w-64 bg-blue-800 text-white min-h-screen">
-            <div class="p-6 text-2xl font-bold">Youdemy Admin</div>
-            <ul class="mt-8">
-                <li><a href="/admin/dashboard" class="block p-4 hover:bg-blue-700">Dashboard</a></li>
-                <li><a href="/admin/users" class="block p-4 hover:bg-blue-700">Manage Users</a></li>
-                <li><a href="/admin/courses" class="block p-4 hover:bg-blue-700">Manage Courses</a></li>
-                <li><a href="/admin/statistics" class="block p-4 hover:bg-blue-700">Statistics</a></li>
-                <li><a href="/logout" class="block p-4 hover:bg-blue-700">Logout</a></li>
-            </ul>
-        </div>
+<div class="flex">
+    <div class="w-64 bg-blue-800 text-white min-h-screen">
+        <div class="p-6 text-2xl font-bold">Youdemy Admin</div>
+        <ul class="mt-8">
+            <li><a href="/admin/dashboard" class="block p-4 hover:bg-blue-700">Dashboard</a></li>
+            <li><a href="/admin/users" class="block p-4 hover:bg-blue-700">Manage Users</a></li>
+            <li><a href="/admin/courses" class="block p-4 hover:bg-blue-700">Manage Courses</a></li>
+            <li><a href="/admin/statistics" class="block p-4 hover:bg-blue-700">Statistics</a></li>
+            <!-- New Links for Categories and Tags -->
+            <li><a href="/admin/categories" class="block p-4 hover:bg-blue-700">Manage Categories</a></li>
+            <li><a href="/admin/tags" class="block p-4 hover:bg-blue-700">Manage Tags</a></li>
+            <li><a href="/logout" class="block p-4 hover:bg-blue-700">Logout</a></li>
+        </ul>
+    </div>
+
 
         <!-- Main Content -->
         <div class="flex-1 p-6">
