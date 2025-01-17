@@ -13,11 +13,9 @@ if(isset ($_GET['id'])){
 
 echo "hello";
 $courseObj = new Course($db);
-$course = $courseObj->read($_GET['id']);
+$course = $courseObj->read(["courses.id" => 1]);
 
-echo $course[0]['name'];
-
-
+var_dump($course['name']);
 
 
 
