@@ -12,14 +12,19 @@ if(isset ($_GET['id'])){
 
 };
 
-echo "hello";
+if(isset ($_SESSION)){
+    echo " you are log in_______";
+
+}else{
+    echo"you should not be in this page get out_______";
+};
+
+
 $courseObj = new Course($db);
 
 $course = $courseObj->read(["courses.id" => $courseId]);
 
-var_dump($course['name']);
-
-
+var_dump($course['video_content']);
 
 ?>
 
@@ -69,7 +74,7 @@ var_dump($course['name']);
         <!-- Course Information -->
         <div class="text-center mb-12">
             <h2 class="text-3xl font-semibold text-gray-800 mb-4"><?= $course['title']?></h2>
-            <img src="course-featured-image.jpg" alt="Course Featured Image" class="w-full h-64 object-cover rounded-lg shadow-md mb-4">
+            <img src="<?= $course['featured_image']?>" alt="Course Featured Image" class="w-full h-96 object-cover rounded-lg shadow-md mb-4">
             
             <!-- Tags and Category -->
             <div class="flex justify-center space-x-4 mb-4">
@@ -84,9 +89,9 @@ var_dump($course['name']);
 
             <!-- Horizontal Alignment for Course Information -->
             <div class="flex justify-center space-x-12 text-gray-600 mb-6">
-                <p><strong>Instructor:</strong> Teacher Name</p>
-                <p><strong>Enrollments:</strong> 120 students</p>
-                <p><strong>Published on:</strong> January 1, 2025</p>
+                <p><strong>Teacher:</strong> <?= $course['teacher_name']?></p>
+                <p><strong>Enrollments:</strong> <?= $course['enrolled_students']?></p>
+                <p><strong>Published on:</strong> <?= date('d-m-Y', strtotime($course['created_at']))?></p>
             </div>
         </div>
         <div class="flex justify-center w-full">
@@ -97,16 +102,22 @@ var_dump($course['name']);
             
             <!-- Enroll Button at Top Right (Fixed) -->
             
-
+            <?php
+                if ($course['course_type'] === "Video"):
+            ?>
             <!-- Video Section (iframe) -->
             <div class="mb-6 flex justify-center">
-                <iframe width="80%" height="400" src="https://www.youtube.com/embed/wUog1y5XX1Q?si=wdX8-YhVd_g5jfUR" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="80%" height="400" src=<?= $course['video_content'] ?> title="YouTube video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
+            <?php elseif ($course['course_type'] === "Document"):
+                ?>
 
             <!-- Course Description Text (if not video-based) -->
             <div class="mb-6 px-4 md:px-0 text-left">
-                <p class="text-lg text-gray-700">Here’s the course description or content. If this course is not video-based, this is where you would add details about what the student will learn, requirements, and so on. Make sure to give clear and concise information to your learners. You can write the full course syllabus here with detailed information.</p>
+                <p class="text-lg text-gray-700"><?= $course['content'] ?></p>
             </div>
+            <?php endif;
+                ?>
         </div>
 
     </div>

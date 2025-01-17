@@ -60,10 +60,11 @@ class Course {
     }
 
     public function read($conditions = []) {
-        $query = "SELECT courses.*, users.name as name, categories.category_name as category_name 
-                  FROM courses
-                  JOIN users ON users.id = courses.teacher_id
-                  JOIN categories ON categories.id = courses.category_id";
+        $query = "SELECT courses.*, COUNT(enrolled_courses.course_id) as enrolled_students, users.name as teacher_name, categories.category_name as category_name
+        FROM courses
+        JOIN users ON users.id = courses.teacher_id
+        JOIN categories ON categories.id = courses.category_id
+        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
         
         if (!empty($conditions)) {
             $whereConditions = [];
@@ -72,9 +73,6 @@ class Course {
             }
             $query .= " WHERE " . implode(" AND ", $whereConditions);
         }
-    
-        // Print the query for debugging purposes
-        echo "Query: " . $query . "\n";
     
         $stmt = $this->db->query($query);
         return $stmt->fetch(PDO::FETCH_ASSOC);
