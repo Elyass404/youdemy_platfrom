@@ -24,7 +24,10 @@ $courseObj = new Course($db);
 
 $course = $courseObj->read(["courses.id" => $courseId]);
 
-var_dump($course['video_content']);
+// var_dump($course['video_content']);
+
+// var_dump(tag::getTags($courseId,$db)) ;
+
 
 ?>
 
@@ -82,7 +85,7 @@ var_dump($course['video_content']);
                 <?php 
                 $getTags = tag::getTags($courseId,$db);
                                                 
-                foreach ($getTags as $tag): ?>
+                 foreach ($getTags as $tag): ?>
                 <span class="px-4 py-2 bg-gray-600 text-white rounded-full"><?=$tag['name']?></span>
                 <?php endforeach ;?>
             </div>

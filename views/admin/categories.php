@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-if(isset($_SESSION["name"])){
+if(isset($_SESSION["role"])){
    
-    echo "you are loged in Mr.".$_SESSION['name'];
+    echo "you are loged in Mr.".$_SESSION['role'];
 }else{
     echo "You should not be in this page, Get OUT!!!";
     header("Location: shouldLog.php");
@@ -24,16 +24,7 @@ $categories = $categoryObj->read();
 var_dump($categories[0]);
 print_r($_SESSION);
 
-
-
-
 ?>
-
-
-
-
-
-
 
 
 <!DOCTYPE html>

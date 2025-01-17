@@ -1,3 +1,31 @@
+<?php
+
+
+session_start();
+
+// Define roles as constants to avoid magic strings
+define("ROLE_TEACHER", "teacher");
+$_SESSION['role'] = "helo" ;
+// Assuming you are checking user role before accessing the page
+if (isset($_SESSION['role'])) {
+    // Check if the user is a teacher
+    if ($_SESSION['role'] === ROLE_TEACHER) {
+        echo "Hello, teacher! You are logged in.";
+    } else {
+        // Redirect to login page if the role is not 'teacher'
+        $_SESSION['error'] = "You must be a teacher to access this page.";
+        header("Location: login.php");
+        exit(); // Make sure no further code is executed after redirect
+    }
+} else {
+    // If session role is not set, redirect to login page
+    header("Location: login.php");
+    exit();
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
