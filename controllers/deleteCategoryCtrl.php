@@ -12,10 +12,9 @@ $Message;
     if (isset($_GET['id'])) {
         $condition = ["id" => $_GET['id']];
         $categoryObj = new Category($db);
-        echo "ID: " . htmlspecialchars($_GET['id']) . "<br>"; // For debugging
 
         // Check if the category exists before attempting to delete
-        $category = $categoryObj->read($condition); // Assume read method exists to check if category exists
+        $category = $categoryObj->read($condition);
         if (!empty($category)) {
             if ($categoryObj->delete($condition)) {
                 $Message = "You deleted the category successfully.";

@@ -17,18 +17,21 @@ $Message;
         // Check if the category exists before attempting to delete
         $category = $categoryObj->read($condition); // Assume read method exists to check if category exists
         if (!empty($category)) {
-            $date
+            $data = ["category_name"=>"development"];
+            $conditions = ["id"=>$_GET['id']];
 
-            if ($categoryObj->update($condition)) { update($data, $conditions)
-                $Message = "You deleted the category successfully.";
+            if ($categoryObj->update($data,$condition)) { 
+                $Message = "You Modified the category successfully.";
             } else {
-                $Message = "Failed to delete the category.";
+                $Message = "Failed to Modify the category.";
             }
         } else {
-            $Message = "There is no category with the provided ID to delete.";
+            $Message = "There is no category with the provided ID to modify.";
         }
     } else {
         $Message = "No ID provided.";
     }
+
+    echo $Message;
 
 ?>

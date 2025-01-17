@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+$_SESSION["role"]="teacher";
 if(isset($_SESSION["role"])){
    
     echo "you are loged in Mr.".$_SESSION['role'];
@@ -65,26 +66,40 @@ print_r($_SESSION);
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-2xl font-semibold text-gray-800 mb-6">Categories List</h3>
 
-                <!-- Add Categorie Button -->
-                <a href="/admin/Categories/add" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-6 inline-block">Add Categorie</a>
+                <!-- Add Category Button -->
+                <button id="add-category-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-6 inline-block" onclick="toggleCategoryForm()">Add Category</button>
 
+                <!-- Category Input Form (Initially hidden) -->
+                <div id="add-category-form" class="hidden mb-6 text-center">
+                    <form action="../../controllers/addCategoryCtrl.php" method="POST">
+                        <div class="flex items-center justify-center space-x-4">
+                            <input type="text" id="new-category-name" name="category_name" class="px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter category name" required />
+                            <div>
+                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Add Category</button>
+                                <button type="button" onclick="toggleCategoryForm()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Categories Table -->
                 <table class="min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr class="text-left bg-gray-100">
                             <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">ID</th>
-                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Categorie Name</th>
+                            <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Category Name</th>
                             <th class="py-2 px-4 text-sm text-center font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Categorie row (you can loop this in PHP or backend) -->
-                        <?php foreach ($categories as $category):?>
+                        <!-- Example Category Row (you can loop this in PHP or backend) -->
+                        <?php foreach ($categories as $category): ?>
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-gray-800 text-center"><?= $category["id"]?></td>
-                            <td class="py-3 px-4 text-gray-800 text-center"><?= $category["category_name"]?></td>
+                            <td class="py-3 px-4 text-gray-800 text-center"><?= $category["id"] ?></td>
+                            <td class="py-3 px-4 text-gray-800 text-center"><?= $category["category_name"] ?></td>
                             <td class="py-3 px-4 text-gray-800 text-center">
-                                <a href="/admin/Categories/edit/1" class="text-yellow-600 hover:underline mr-3">Edit</a>
-                                <a href="../../controllers/deleteCategoryCtrl.php?id=<?= $category["id"]?>" class="text-red-600 hover:underline">Delete</a>
+                                <a href="../../controllers/editCategoryCtrl.php?id=<?= $category["id"] ?>" class="text-yellow-600 hover:underline mr-3">Edit</a>
+                                <a href="../../controllers/deleteCategoryCtrl.php?id=<?= $category["id"] ?>" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -95,5 +110,18 @@ print_r($_SESSION);
         </div>
     </div>
 
+    <!-- JavaScript -->
+    <script>
+        function toggleCategoryForm() {
+            // Toggle visibility of add button and form
+            const addButton = document.getElementById('add-category-btn');
+            const form = document.getElementById('add-category-form');
+            addButton.classList.toggle('hidden');
+            form.classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>
+
+
+
