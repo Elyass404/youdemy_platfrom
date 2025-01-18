@@ -2,7 +2,7 @@
 session_start();
 
 $_SESSION["role"]="teacher";
-if(isset($_SESSION["role"])){
+if(isset($_SESSION["role"] )){
    
     echo "you are loged in Mr.".$_SESSION['role'];
 }else{
@@ -20,10 +20,13 @@ $db = $database->getConnection();
 $categoryObj= new Category($db);
 $categories = $categoryObj->read();
 
+// var_dump($categories[0]);
+// print_r($_SESSION);
 
-
-var_dump($categories[0]);
-print_r($_SESSION);
+if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
+    echo "<script type='text/javascript'>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
 
 ?>
 
@@ -74,7 +77,7 @@ print_r($_SESSION);
                     <form action="../../controllers/addCategoryCtrl.php" method="POST">
                         <div class="flex items-center justify-center space-x-4">
                             <input type="text" id="new-category-name" name="category_name" class="px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter category name" required />
-                            <div>
+                            <div class="flex items-center space-x-4">
                                 <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Add Category</button>
                                 <button type="button" onclick="toggleCategoryForm()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Cancel</button>
                             </div>
@@ -96,9 +99,18 @@ print_r($_SESSION);
                         <?php foreach ($categories as $category): ?>
                         <tr class="border-b">
                             <td class="py-3 px-4 text-gray-800 text-center"><?= $category["id"] ?></td>
-                            <td class="py-3 px-4 text-gray-800 text-center"><?= $category["category_name"] ?></td>
+                            <td class="py-3 px-4 text-gray-800 text-center" id="category-name-<?= $category["id"] ?>">
+                                <span id="category-text-<?= $category["id"] ?>"><?= $category["category_name"] ?></span>
+                                <form id="edit-form-<?= $category["id"] ?>" class="hidden" action="../../controllers/editCategoryCtrl.php?id=<?= $category["id"] ?>" method="POST">
+                                    <input type="text" name="category_name" value="<?= $category["category_name"] ?>" class="px-4 py-2 border border-gray-300 rounded-md w-56">
+                                    <div class="flex items-center space-x-4">
+                                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Save</button>
+                                        <button type="button" onclick="cancelEdit(<?= $category['id'] ?>)" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Cancel</button>
+                                    </div>
+                                </form>
+                            </td>
                             <td class="py-3 px-4 text-gray-800 text-center">
-                                <a href="../../controllers/editCategoryCtrl.php?id=<?= $category["id"] ?>" class="text-yellow-600 hover:underline mr-3">Edit</a>
+                                <button onclick="editCategory(<?= $category['id'] ?>)" class="text-yellow-600 hover:underline mr-3">Edit</button>
                                 <a href="../../controllers/deleteCategoryCtrl.php?id=<?= $category["id"] ?>" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
@@ -119,9 +131,28 @@ print_r($_SESSION);
             addButton.classList.toggle('hidden');
             form.classList.toggle('hidden');
         }
+
+        function editCategory(categoryId) {
+            // Hide the category name and show the edit form
+            const categoryText = document.getElementById('category-text-' + categoryId);
+            const editForm = document.getElementById('edit-form-' + categoryId);
+
+            categoryText.classList.add('hidden');
+            editForm.classList.remove('hidden');
+        }
+
+        function cancelEdit(categoryId) {
+            // Cancel the editing process, hide input and show the original category name again
+            const categoryText = document.getElementById('category-text-' + categoryId);
+            const editForm = document.getElementById('edit-form-' + categoryId);
+
+            categoryText.classList.remove('hidden');
+            editForm.classList.add('hidden');
+        }
     </script>
 </body>
 </html>
+
 
 
 

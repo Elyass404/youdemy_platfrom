@@ -1,37 +1,44 @@
 <?php
+session_start();
 
 use Config\Connection;
-use Models\Course;
 use Models\Category;
-require __DIR__.'/../vendor/autoload.php'; 
+use Models\course;
+require __DIR__.'/../vendor/autoload.php';
+
+
 
 $database = new Connection();
 $db = $database->getConnection();
-$Message;
+$Message = '';
 
-    if (isset($_GET['id'])) {
-        $condition = ["id" => $_GET['id']];
-        $categoryObj = new Category($db);
-        echo "ID: " . htmlspecialchars($_GET['id']) . "<br>"; // For debugging
-
-        // Check if the category exists before attempting to delete
-        $category = $categoryObj->read($condition); // Assume read method exists to check if category exists
-        if (!empty($category)) {
-            $data = ["category_name"=>"development"];
-            $conditions = ["id"=>$_GET['id']];
-
-            if ($categoryObj->update($data,$condition)) { 
-                $Message = "You Modified the category successfully.";
+if (isset($_GET['id'])) {
+    $condition = ["id" => $_GET['id']];
+    $categoryObj = new Category($db);
+    
+        if (isset($_POST['category_name']) && !empty($_POST['category_name'])) {
+            $category_name = filter_var($_POST['category_name'], FILTER_SANITIZE_STRING);
+            $data = ["category_name" => $category_name];
+            
+            if ($categoryObj->update($data, $condition)) {
+                $_SESSION['message'] = "Category modified successfully.";
+                header('Location:../views/admin/categories.php');
+                exit;
             } else {
-                $Message = "Failed to Modify the category.";
+                $_SESSION['message'] = "Failed to modify category.";
+                header('Location:../views/admin/categories.php');
+                exit;
             }
         } else {
-            $Message = "There is no category with the provided ID to modify.";
+            $_SESSION['message'] = "Category name is required.";
+            header('Location:../views/admin/categories.php');
+            exit;
         }
-    } else {
-        $Message = "No ID provided.";
-    }
-
-    echo $Message;
+    
+} else {
+    $_SESSION['message'] = "No ID provided.";
+    header('Location:../views/admin/categories.php');
+    exit;
+}
 
 ?>
