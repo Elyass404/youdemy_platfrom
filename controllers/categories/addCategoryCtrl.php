@@ -4,7 +4,7 @@ session_start();
 use Config\Connection;
 use Models\Category;
 use Models\course;
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/../../vendor/autoload.php';
 
 
 
@@ -21,16 +21,16 @@ $Message = '';
             
             if ($categoryObj->create($data)) {
                 $_SESSION['message'] = "Category added successfully.";
-                header('Location:../views/admin/categories.php');
+                header('Location:../../views/admin/categories.php');
                 exit;
             } else {
                 $_SESSION['message'] = "Failed to add category.";
-                header('Location:../views/admin/categories.php');
+                header('Location:../../views/admin/categories.php');
                 exit;
             }
         } else {
             $_SESSION['message'] = "Category name is required.";
-            header('Location:../views/admin/categories.php');
+            header('Location:../../views/admin/categories.php');
             exit;
         }
     

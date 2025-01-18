@@ -3,7 +3,7 @@
 use Config\Connection;
 use Models\Course;
 use Models\Category;
-require __DIR__.'/../vendor/autoload.php'; 
+require __DIR__.'/../../vendor/autoload.php'; 
 
 $database = new Connection();
 $db = $database->getConnection();

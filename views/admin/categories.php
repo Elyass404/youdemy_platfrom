@@ -74,7 +74,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
 
                 <!-- Category Input Form (Initially hidden) -->
                 <div id="add-category-form" class="hidden mb-6 text-center">
-                    <form action="../../controllers/addCategoryCtrl.php" method="POST">
+                    <form action="../../controllers/categories/addCategoryCtrl.php" method="POST">
                         <div class="flex items-center justify-center space-x-4">
                             <input type="text" id="new-category-name" name="category_name" class="px-4 py-2 border border-gray-300 rounded-md" placeholder="Enter category name" required />
                             <div class="flex items-center space-x-4">
@@ -101,7 +101,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             <td class="py-3 px-4 text-gray-800 text-center"><?= $category["id"] ?></td>
                             <td class="py-3 px-4 text-gray-800 text-center" id="category-name-<?= $category["id"] ?>">
                                 <span id="category-text-<?= $category["id"] ?>"><?= $category["category_name"] ?></span>
-                                <form id="edit-form-<?= $category["id"] ?>" class="hidden" action="../../controllers/editCategoryCtrl.php?id=<?= $category["id"] ?>" method="POST">
+                                <form id="edit-form-<?= $category["id"] ?>" class="hidden" action="../../controllers/categories/editCategoryCtrl.php?id=<?= $category["id"] ?>" method="POST">
                                     <input type="text" name="category_name" value="<?= $category["category_name"] ?>" class="px-4 py-2 border border-gray-300 rounded-md w-56">
                                     <div class="flex items-center space-x-4">
                                         <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Save</button>
@@ -111,7 +111,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             </td>
                             <td class="py-3 px-4 text-gray-800 text-center">
                                 <button onclick="editCategory(<?= $category['id'] ?>)" class="text-yellow-600 hover:underline mr-3">Edit</button>
-                                <a href="../../controllers/deleteCategoryCtrl.php?id=<?= $category["id"] ?>" class="text-red-600 hover:underline">Delete</a>
+                                <a href="../../controllers/categories/deleteCategoryCtrl.php?id=<?= $category["id"] ?>" class="text-red-600 hover:underline">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

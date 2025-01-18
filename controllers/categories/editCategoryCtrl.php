@@ -4,7 +4,7 @@ session_start();
 use Config\Connection;
 use Models\Category;
 use Models\course;
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/../../vendor/autoload.php';
 
 
 
@@ -22,22 +22,22 @@ if (isset($_GET['id'])) {
             
             if ($categoryObj->update($data, $condition)) {
                 $_SESSION['message'] = "Category modified successfully.";
-                header('Location:../views/admin/categories.php');
+                header('Location:../../views/admin/categories.php');
                 exit;
             } else {
                 $_SESSION['message'] = "Failed to modify category.";
-                header('Location:../views/admin/categories.php');
+                header('Location:../../views/admin/categories.php');
                 exit;
             }
         } else {
             $_SESSION['message'] = "Category name is required.";
-            header('Location:../views/admin/categories.php');
+            header('Location:../../views/admin/categories.php');
             exit;
         }
     
 } else {
     $_SESSION['message'] = "No ID provided.";
-    header('Location:../views/admin/categories.php');
+    header('Location:../../views/admin/categories.php');
     exit;
 }
 
