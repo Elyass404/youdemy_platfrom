@@ -77,53 +77,82 @@ class Course {
     //     $stmt = $this->db->query($query);
     //     return $stmt->fetch(PDO::FETCH_ASSOC);
     // }
+
+
+
+
+    public function readVideoCourse($type) {
+        $query = "SELECT *, users.name as teacher_name, categories.category_name as category_name
+        FROM courses
+        LEFT JOIN users ON users.id = courses.teacher_id
+        LEFT JOIN categories ON categories.id = courses.category_id
+        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id
+        WHERE course_type = 'video' ";
+    
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function readDocumentCourse() {
+        $query = "SELECT *, users.name as teacher_name, categories.category_name as category_name
+        FROM courses
+        LEFT JOIN users ON users.id = courses.teacher_id
+        LEFT JOIN categories ON categories.id = courses.category_id
+        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id
+        WHERE course_type = 'document' ";
+    
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     
 
 
 
-    public function readDocumentCourse($conditions = []) {
-        $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
-        FROM courses
-        LEFT JOIN users ON users.id = courses.teacher_id
-        LEFT JOIN categories ON categories.id = courses.category_id 
-        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
-        if (!empty($conditions)) {
-            $query .= " WHERE " . implode(" AND ", array_map(function($key) {
-                return "$key = :$key";
-            }, array_keys($conditions)));
-        }
-        $stmt = $this->db->prepare($query);
+    // public function readDocumentCourse1($conditions = []) {
+    //     $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
+    //     FROM courses
+    //     LEFT JOIN users ON users.id = courses.teacher_id
+    //     LEFT JOIN categories ON categories.id = courses.category_id 
+    //     LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
+    //     if (!empty($conditions)) {
+    //         $query .= " WHERE " . implode(" AND ", array_map(function($key) {
+    //             return "$key = :$key";
+    //         }, array_keys($conditions)));
+    //     }
+    //     $stmt = $this->db->prepare($query);
 
-        foreach ($conditions as $key => &$val) {
-            $stmt->bindParam(":$key", $val);
-        }
+    //     foreach ($conditions as $key => &$val) {
+    //         $stmt->bindParam(":$key", $val);
+    //     }
 
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    //     $stmt->execute();
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
 
 
 
-    public function readVideoCourse($conditions = [],$type) {
-        $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
-        FROM courses
-        LEFT JOIN users ON users.id = courses.teacher_id
-        LEFT JOIN categories ON categories.id = courses.category_id 
-        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id" ;
-        if (!empty($conditions)) {
-            $query .= " WHERE " . implode(" AND ", array_map(function($key) {
-                return "$key = :$key";
-            }, array_keys($conditions)));
-        }
-        $stmt = $this->db->prepare($query);
+    // public function readVideoCourse1($conditions = [],$type) {
+    //     $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
+    //     FROM courses
+    //     LEFT JOIN users ON users.id = courses.teacher_id
+    //     LEFT JOIN categories ON categories.id = courses.category_id 
+    //     LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id" ;
+    //     if (!empty($conditions)) {
+    //         $query .= " WHERE " . implode(" AND ", array_map(function($key) {
+    //             return "$key = :$key";
+    //         }, array_keys($conditions)));
+    //     }
+    //     $stmt = $this->db->prepare($query);
 
-        foreach ($conditions as $key => &$val) {
-            $stmt->bindParam(":$key", $val);
-        }
+    //     foreach ($conditions as $key => &$val) {
+    //         $stmt->bindParam(":$key", $val);
+    //     }
 
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    //     $stmt->execute();
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
     
 
 
@@ -212,10 +241,10 @@ class Course {
                     throw new Exception("Invalid number of arguments for create method.");
                 }
             } elseif ($name === "read"){
-                if (count($args) === 1) {
-                    return $this->readDocumentCourse($args[0]);
-                } elseif (count($args) === 2) {
-                    return $this->readVideoCourse($args[0], $args[1]);
+                if (count($args) === 0) {
+                    return $this->readDocumentCourse();
+                } elseif (count($args) === 1) {
+                    return $this->readVideoCourse($args[0]);
                 } else {
                     throw new Exception("Invalid number of arguments for create method.");
                 }

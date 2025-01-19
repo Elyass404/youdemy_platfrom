@@ -19,11 +19,11 @@ $database = new Connection();
 $db = $database->getConnection();
 
 $courseObj= new Course($db);
-// $textCourses = $courseObj->read(["course_type"=>"Document"]);
-$videoCourses = $courseObj->read(["course_type"=>"Video"]);
+$textCourses = $courseObj->read();
+// $videoCourses = $courseObj->read("video");
 
-// var_dump($textCourses);
-var_dump($videoCourses);
+var_dump($textCourses);
+// var_dump($videoCourses);
 
 
 

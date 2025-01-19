@@ -90,3 +90,11 @@ ON DELETE SET NULL;
 --the course should stay without deleting, even if the category doesnt exist 
 ALTER TABLE courses
 MODIFY category_id INT NULL;
+
+ALTER TABLE courses
+ADD COLUMN course_status ENUM('pending', 'accepted', 'refused') NOT NULL DEFAULT 'pending';
+
+ALTER TABLE courses
+DROP COLUMN status;
+
+
