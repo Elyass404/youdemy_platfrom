@@ -59,24 +59,43 @@ class Course {
         return $result;
     }
 
-    // public function read($conditions = []) {
-    //     $query = "SELECT courses.*, COUNT(enrolled_courses.course_id) as enrolled_students, users.name as teacher_name, categories.category_name as category_name
-    //     FROM courses
-    //     LEFT JOIN users ON users.id = courses.teacher_id
-    //     LEFT JOIN categories ON categories.id = courses.category_id
-    //     LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
+    public function readCertainCourses($conditions = []) {
+        $query = "SELECT courses.*, users.name as teacher_name, categories.category_name as category_name
+        FROM courses
+        LEFT JOIN users ON users.id = courses.teacher_id
+        LEFT JOIN categories ON categories.id = courses.category_id";
         
-    //     if (!empty($conditions)) {
-    //         $whereConditions = [];
-    //         foreach ($conditions as $key => $val) {
-    //             $whereConditions[] = "$key = " . $this->db->quote($val);
-    //         }
-    //         $query .= " WHERE " . implode(" AND ", $whereConditions);
-    //     }
+        if (!empty($conditions)) {
+            $whereConditions = [];
+            foreach ($conditions as $key => $val) {
+                $whereConditions[] = "$key = " . $this->db->quote($val);
+            }
+            $query .= " WHERE " . implode(" AND ", $whereConditions);
+        }
     
-    //     $stmt = $this->db->query($query);
-    //     return $stmt->fetch(PDO::FETCH_ASSOC);
-    // }
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function readCourseWithEnrollement($conditions = []) {
+        $query = "SELECT courses.*, COUNT(enrolled_courses.course_id) as enrolled_students, users.name as teacher_name, categories.category_name as category_name
+        FROM courses
+        LEFT JOIN users ON users.id = courses.teacher_id
+        LEFT JOIN categories ON categories.id = courses.category_id
+        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
+        
+        if (!empty($conditions)) {
+            $whereConditions = [];
+            foreach ($conditions as $key => $val) {
+                $whereConditions[] = "$key = " . $this->db->quote($val);
+            }
+            $query .= " WHERE " . implode(" AND ", $whereConditions);
+        }
+    
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 

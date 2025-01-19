@@ -21,11 +21,13 @@ $db = $database->getConnection();
 $courseObj= new Course($db);
 $textCourses = $courseObj->read();
 $videoCourses = $courseObj->read("video");
+$pendingCourses= $courseObj->readCertainCourses(["course_status"=>"pending"]);
 $totalCourses= Course::countCourses($db);
 $totalEnrolledCourses= Course::countEnrolledCourses($db);
 $topCourses= Course::topCourses($db);
 
-var_dump($topCourses);
+
+var_dump($pendingCourses);
 // var_dump($textCourses);
 // var_dump($videoCourses);
 // var_dump($textCourses[0]['teacher_name']);
@@ -108,7 +110,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                         <h4 class="text-lg font-semibold text-gray-800"><?= $course['title']?></h4>
                         <p class="text-sm text-gray-600">Teacher: <?= $course['teacher_name']?></p>
                         <p class="text-sm text-gray-600">Enrolled Students: <?= $course['total_enrollments']?></p>
-                        <a href="../users/course_page.php?=<?=$course['id']?>" class="text-white bg-blue-500 rounded px-2 py-1 w-full text-center hover:underline mt-4 inline-block">View Course</a>
+                        <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-white bg-blue-500 rounded px-2 py-1 w-full text-center hover:underline mt-4 inline-block">View Course</a>
                     </div>
                     <?php $counting++?>
                     <?php endforeach; ?>
@@ -133,20 +135,25 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <?php
+                        foreach($pendingCourses as $course):
+                        ?>
+
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-center">101</td>
-                            <td class="py-3 px-4 text-center">Intro to Python</td>
-                            <td class="py-3 px-4 text-center">John Doe</td>
-                            <td class="py-3 px-4 text-center">2025-01-15</td>
-                            <td class="py-3 px-4 text-center">Programming</td>
-                            <td class="py-3 px-4 text-center"><span class="bg-orange-500 px-2 py-1 rounded-md text-white">Pending</span></td>
-                            <td class="py-3 px-4 text-center"><a href="#" class="text-blue-600 hover:underline">View</a></td>
+                            <td class="py-3 px-4 text-center"><?= $course['id']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['title']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['category_name']?></td>
+                            <td class="py-3 px-4 text-center"><span class="bg-orange-500 px-2 py-1 rounded-md text-white"><?= $course['course_status']?></span></td>
+                            <td class="py-3 px-4 text-center"><a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a></td>
                             <td class="py-3 px-4 text-center">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Accept</button>
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"><a href="../../controllers/courses/acceptCourseCtrl.php?id=<?= $course['id']?>">Accept</a></button>
                                 <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Refuse</button>
                             </td>
                         </tr>
+
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -184,7 +191,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             <td class="py-3 px-4 text-center"><span class="bg-green-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
                             <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
                             <td class="py-3 px-4 text-center">
-                                <a href="#" class="text-blue-600 hover:underline">View</a>
+                                <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
                                 <button class="text-yellow-600 hover:underline ml-3">Modify</button>
                                 <button class="text-red-600 hover:underline ml-3">Delete</button>
                             </td>
@@ -223,7 +230,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             <td class="py-3 px-4 text-center"><span class="bg-yellow-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
                             <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
                             <td class="py-3 px-4 text-center">
-                                <a href="#" class="text-blue-600 hover:underline">View</a>
+                                <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
                                 <button class="text-yellow-600 hover:underline ml-3">Modify</button>
                                 <button class="text-red-600 hover:underline ml-3">Delete</button>
                             </td>

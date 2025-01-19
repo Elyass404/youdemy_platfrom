@@ -7,7 +7,7 @@ use PDOException;
 
 
 class Admin extends User {
-    private $crud;
+    protected $crud;
 
     // Constructor to initialize the CRUD object
     public function __construct($db) {
@@ -19,6 +19,13 @@ class Admin extends User {
         $data = ['status' => 'activated']; // Change status to 'activated'
         $conditions = ['id' => $teacherId];
         return $this->crud->update($data, $conditions, 'users'); 
+    }
+
+    // Accept Course
+    public function acceptCourse($courseId) {
+        $data = ['course_status' => 'accepted']; // Change course_status to 'accepted'
+        $conditions = ['id' => $courseId];
+        return $this->crud->update($data, $conditions, 'courses'); 
     }
 
     // Add a new user 

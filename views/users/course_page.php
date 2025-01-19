@@ -22,7 +22,7 @@ if(isset ($_SESSION)){
 
 $courseObj = new Course($db);
 
-$course = $courseObj->read(["courses.id" => $courseId]);
+$course = $courseObj->readCourseWithEnrollement(["courses.id" => $courseId]);
 
 // var_dump($course['video_content']);
 
@@ -76,12 +76,12 @@ $course = $courseObj->read(["courses.id" => $courseId]);
 
         <!-- Course Information -->
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-4"><?= $course['title']?></h2>
-            <img src="<?= $course['featured_image']?>" alt="Course Featured Image" class="w-full h-96 object-cover rounded-lg shadow-md mb-4">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-4"><?= $course[0]['title']?></h2>
+            <img src="<?= $course[0]['featured_image']?>" alt="Course Featured Image" class="w-full h-96 object-cover rounded-lg shadow-md mb-4">
             
             <!-- Tags and Category -->
             <div class="flex justify-center space-x-4 mb-4">
-                <span class="px-4 py-2 bg-blue-600 text-white rounded-full"><?= $course['category_name']?></span>
+                <span class="px-4 py-2 bg-blue-600 text-white rounded-full"><?= $course[0]['category_name']?></span>
                 <?php 
                 $getTags = tag::getTags($courseId,$db);
                                                 
@@ -92,9 +92,9 @@ $course = $courseObj->read(["courses.id" => $courseId]);
 
             <!-- Horizontal Alignment for Course Information -->
             <div class="flex justify-center space-x-12 text-gray-600 mb-6">
-                <p><strong>Teacher:</strong> <?= $course['teacher_name']?></p>
-                <p><strong>Enrollments:</strong> <?= $course['enrolled_students']?></p>
-                <p><strong>Published on:</strong> <?= date('d-m-Y', strtotime($course['created_at']))?></p>
+                <p><strong>Teacher:</strong> <?= $course[0]['teacher_name']?></p>
+                <p><strong>Enrollments:</strong> <?= $course[0]['enrolled_students']?></p>
+                <p><strong>Published on:</strong> <?= date('d-m-Y', strtotime($course[0]['created_at']))?></p>
             </div>
         </div>
         <div class="flex justify-center w-full">
@@ -106,18 +106,18 @@ $course = $courseObj->read(["courses.id" => $courseId]);
             <!-- Enroll Button at Top Right (Fixed) -->
             
             <?php
-                if ($course['course_type'] === "Video"):
+                if ($course[0]['course_type'] === "Video"):
             ?>
             <!-- Video Section (iframe) -->
             <div class="mb-6 flex justify-center">
-                <iframe width="80%" height="400" src=<?= $course['video_content'] ?> title="YouTube video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="80%" height="400" src=<?= $course[0]['video_content'] ?> title="YouTube video" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <?php elseif ($course['course_type'] === "Document"):
+            <?php elseif ($course[0]['course_type'] === "Document"):
                 ?>
 
             <!-- Course Description Text (if not video-based) -->
             <div class="mb-6 px-4 md:px-0 text-left">
-                <p class="text-lg text-gray-700"><?= $course['content'] ?></p>
+                <p class="text-lg text-gray-700"><?= $course[0]['content'] ?></p>
             </div>
             <?php endif;
                 ?>
