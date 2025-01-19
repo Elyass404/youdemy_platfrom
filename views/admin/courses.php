@@ -21,8 +21,10 @@ $db = $database->getConnection();
 $courseObj= new Course($db);
 $textCourses = $courseObj->read();
 $videoCourses = $courseObj->read("video");
+$totalCourses= Course::countCourses($db);
 
-var_dump($textCourses);
+var_dump($totalCourses);
+// var_dump($textCourses);
 // var_dump($videoCourses);
 // var_dump($textCourses[0]['teacher_name']);
 
@@ -81,7 +83,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
             <div class="grid grid-cols-2 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Total Courses</h3>
-                    <p class="text-4xl font-bold text-gray-800">120</p>
+                    <p class="text-4xl font-bold text-gray-800"><?= $totalCourses ?></p>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md">

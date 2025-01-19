@@ -195,7 +195,7 @@ class Course {
         
     }
 
-    public static function countcourses($db, $conditions = []) {
+    public static function countCourses($db, $conditions = []) {
         $query = "SELECT COUNT(*) as total FROM courses";
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", array_map(function($key) {
