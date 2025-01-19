@@ -20,10 +20,11 @@ $db = $database->getConnection();
 
 $courseObj= new Course($db);
 $textCourses = $courseObj->read();
-// $videoCourses = $courseObj->read("video");
+$videoCourses = $courseObj->read("video");
 
 var_dump($textCourses);
 // var_dump($videoCourses);
+// var_dump($textCourses[0]['teacher_name']);
 
 
 
@@ -179,20 +180,24 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Row -->
+
+                        <?php 
+                            foreach($textCourses as $course):
+                        ?>
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-center">103</td>
-                            <td class="py-3 px-4 text-center">Intro to Data Science</td>
-                            <td class="py-3 px-4 text-center">Alice Brown</td>
-                            <td class="py-3 px-4 text-center">2025-01-12</td>
-                            <td class="py-3 px-4 text-center"><span class="bg-green-400 px-2 py-1 rounded-md">Science</span></td>
-                            <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md">Active</span></td>
+                            <td class="py-3 px-4 text-center"><?= $course['id']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['title']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
+                            <td class="py-3 px-4 text-center"><span class="bg-green-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
+                            <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
                             <td class="py-3 px-4 text-center">
                                 <a href="#" class="text-blue-600 hover:underline">View</a>
                                 <button class="text-yellow-600 hover:underline ml-3">Modify</button>
                                 <button class="text-red-600 hover:underline ml-3">Delete</button>
                             </td>
                         </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -213,20 +218,27 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Row -->
+
+                    <?php 
+                            foreach($videoCourses as $course):
+                    ?>
+
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-center">104</td>
-                            <td class="py-3 px-4 text-center">Advanced React</td>
-                            <td class="py-3 px-4 text-center">Michael Green</td>
-                            <td class="py-3 px-4 text-center">2025-01-08</td>
-                            <td class="py-3 px-4 text-center"><span class="bg-yellow-400 px-2 py-1 rounded-md">Web Development</span></td>
-                            <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md">Active</span></td>
+                            <td class="py-3 px-4 text-center"><?= $course['id']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['title']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
+                            <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
+                            <td class="py-3 px-4 text-center"><span class="bg-yellow-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
+                            <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
                             <td class="py-3 px-4 text-center">
                                 <a href="#" class="text-blue-600 hover:underline">View</a>
                                 <button class="text-yellow-600 hover:underline ml-3">Modify</button>
                                 <button class="text-red-600 hover:underline ml-3">Delete</button>
                             </td>
                         </tr>
+
+                        <?php endforeach; ?>
+
                     </tbody>
                 </table>
             </div>
