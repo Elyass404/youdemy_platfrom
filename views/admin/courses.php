@@ -23,8 +23,9 @@ $textCourses = $courseObj->read();
 $videoCourses = $courseObj->read("video");
 $totalCourses= Course::countCourses($db);
 $totalEnrolledCourses= Course::countEnrolledCourses($db);
+$topCourses= Course::topCourses($db);
 
-var_dump($totalEnrolledCourses);
+var_dump($topCourses);
 // var_dump($textCourses);
 // var_dump($videoCourses);
 // var_dump($textCourses[0]['teacher_name']);
@@ -97,32 +98,20 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
             <div class="mb-8">
                 <h3 class="text-2xl font-semibold text-gray-800 mb-6">Top 3 Courses</h3>
                 <div class="grid grid-cols-3 gap-6">
-                    <!-- Course 1 -->
+                    <?php
+                    $counting = 1;
+                    foreach($topCourses as $course):
+                    ?>
                     <div class="bg-white p-6 rounded-lg shadow-md">
-                        <img src="https://images.unsplash.com/photo-1735437683931-b8a17f57912d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Course 1" class="w-full h-40 object-cover rounded-lg mb-4">
-                        <h4 class="text-lg font-semibold text-gray-800">Course Title 1</h4>
-                        <p class="text-sm text-gray-600">Teacher: John Doe</p>
-                        <p class="text-sm text-gray-600">Enrolled: 200 students</p>
-                        <a href="/admin/courses/view/1" class="text-blue-600 hover:underline mt-4 inline-block">View Course</a>
+                        <div>#<?= $counting?></div>
+                        <img src="<?= $course['featured_image']?>" alt="Course 1" class="w-full h-40 object-cover rounded-lg mb-4">
+                        <h4 class="text-lg font-semibold text-gray-800"><?= $course['title']?></h4>
+                        <p class="text-sm text-gray-600">Teacher: <?= $course['teacher_name']?></p>
+                        <p class="text-sm text-gray-600">Enrolled Students: <?= $course['total_enrollments']?></p>
+                        <a href="../users/course_page.php?=<?=$course['id']?>" class="text-white bg-blue-500 rounded px-2 py-1 w-full text-center hover:underline mt-4 inline-block">View Course</a>
                     </div>
-
-                    <!-- Course 2 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <img src="https://images.unsplash.com/photo-1735437683931-b8a17f57912d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Course 2" class="w-full h-40 object-cover rounded-lg mb-4">
-                        <h4 class="text-lg font-semibold text-gray-800">Course Title 2</h4>
-                        <p class="text-sm text-gray-600">Teacher: Jane Smith</p>
-                        <p class="text-sm text-gray-600">Enrolled: 180 students</p>
-                        <a href="/admin/courses/view/2" class="text-blue-600 hover:underline mt-4 inline-block">View Course</a>
-                    </div>
-
-                    <!-- Course 3 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md">
-                        <img src="https://images.unsplash.com/photo-1735437683931-b8a17f57912d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Course 3" class="w-full h-40 object-cover rounded-lg mb-4">
-                        <h4 class="text-lg font-semibold text-gray-800">Course Title 3</h4>
-                        <p class="text-sm text-gray-600">Teacher: Sarah Lee</p>
-                        <p class="text-sm text-gray-600">Enrolled: 150 students</p>
-                        <a href="/admin/courses/view/3" class="text-blue-600 hover:underline mt-4 inline-block">View Course</a>
-                    </div>
+                    <?php $counting++?>
+                    <?php endforeach; ?>
                 </div>
             </div>
 

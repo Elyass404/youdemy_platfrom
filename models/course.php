@@ -231,10 +231,16 @@ class Course {
 
     
 
-    public static function countTopcourses($db){
-        $query = "SELECT * FROM courses ORDER BY views DESC LIMIT 3";  
+    public static function Topcourses($db){
+        $query = "SELECT courses.*, COUNT(enrolled_courses.course_id) AS total_enrollments, users.name as teacher_name
+        FROM courses
+        JOIN enrolled_courses ON enrolled_courses.course_id = courses.id
+        JOIN users ON users.id = courses.teacher_id
+        GROUP BY courses.id, courses.title
+        ORDER BY total_enrollments DESC
+        LIMIT 3;";  
     $stmt = $db->prepare($query);
-    $stmt->execute();  // Execute the query
+    $stmt->execute(); 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 
     return $result;  
