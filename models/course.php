@@ -59,24 +59,24 @@ class Course {
         return $result;
     }
 
-    public function read($conditions = []) {
-        $query = "SELECT courses.*, COUNT(enrolled_courses.course_id) as enrolled_students, users.name as teacher_name, categories.category_name as category_name
-        FROM courses
-        LEFT JOIN users ON users.id = courses.teacher_id
-        LEFT JOIN categories ON categories.id = courses.category_id
-        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
+    // public function read($conditions = []) {
+    //     $query = "SELECT courses.*, COUNT(enrolled_courses.course_id) as enrolled_students, users.name as teacher_name, categories.category_name as category_name
+    //     FROM courses
+    //     LEFT JOIN users ON users.id = courses.teacher_id
+    //     LEFT JOIN categories ON categories.id = courses.category_id
+    //     LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
         
-        if (!empty($conditions)) {
-            $whereConditions = [];
-            foreach ($conditions as $key => $val) {
-                $whereConditions[] = "$key = " . $this->db->quote($val);
-            }
-            $query .= " WHERE " . implode(" AND ", $whereConditions);
-        }
+    //     if (!empty($conditions)) {
+    //         $whereConditions = [];
+    //         foreach ($conditions as $key => $val) {
+    //             $whereConditions[] = "$key = " . $this->db->quote($val);
+    //         }
+    //         $query .= " WHERE " . implode(" AND ", $whereConditions);
+    //     }
     
-        $stmt = $this->db->query($query);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+    //     $stmt = $this->db->query($query);
+    //     return $stmt->fetch(PDO::FETCH_ASSOC);
+    // }
     
 
 
@@ -84,8 +84,32 @@ class Course {
     public function readDocumentCourse($conditions = []) {
         $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
         FROM courses
-        JOIN users ON users.id = courses.teacher_id
-        JOIN categories ON categories.id = courses.category_id " ;
+        LEFT JOIN users ON users.id = courses.teacher_id
+        LEFT JOIN categories ON categories.id = courses.category_id 
+        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id";
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", array_map(function($key) {
+                return "$key = :$key";
+            }, array_keys($conditions)));
+        }
+        $stmt = $this->db->prepare($query);
+
+        foreach ($conditions as $key => &$val) {
+            $stmt->bindParam(":$key", $val);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+    public function readVideoCourse($conditions = [],$type) {
+        $query = "SELECT *, courses.id  , users.name as name  , categories.category_name  as category_name 
+        FROM courses
+        LEFT JOIN users ON users.id = courses.teacher_id
+        LEFT JOIN categories ON categories.id = courses.category_id 
+        LEFT JOIN enrolled_courses ON enrolled_courses.course_id = courses.id" ;
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", array_map(function($key) {
                 return "$key = :$key";
@@ -187,7 +211,15 @@ class Course {
                 } else {
                     throw new Exception("Invalid number of arguments for create method.");
                 }
-            } 
+            } elseif ($name === "read"){
+                if (count($args) === 1) {
+                    return $this->readDocumentCourse($args[0]);
+                } elseif (count($args) === 2) {
+                    return $this->readVideoCourse($args[0], $args[1]);
+                } else {
+                    throw new Exception("Invalid number of arguments for create method.");
+                }
+            }
         }
 
 

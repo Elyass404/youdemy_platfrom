@@ -19,10 +19,13 @@ $database = new Connection();
 $db = $database->getConnection();
 
 $courseObj= new Course($db);
-// $courses = $courseObj->read();
+// $textCourses = $courseObj->read(["course_type"=>"Document"]);
+$videoCourses = $courseObj->read(["course_type"=>"Video"]);
 
-// var_dump($categories[0]);
-// print_r($_SESSION);
+// var_dump($textCourses);
+var_dump($videoCourses);
+
+
 
 if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
     echo "<script type='text/javascript'>alert('" . $_SESSION['message'] . "');</script>";
