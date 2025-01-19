@@ -211,8 +211,28 @@ class Course {
         return $result['total'];
     }
 
+
+    public static function countEnrolledCourses($db, $conditions = []) {
+        $query = "SELECT COUNT(DISTINCT enrolled_courses.course_id) AS total_courses_enrolled
+                  FROM enrolled_courses";
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", array_map(function($key) {
+                return "$key = :$key";
+            }, array_keys($conditions)));
+        }
+        $stmt = $db->prepare($query);
+        foreach ($conditions as $key => &$val) {
+            $stmt->bindParam(":$key", $val);
+        }
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total_courses_enrolled'];
+    }
+
+    
+
     public static function countTopcourses($db){
-        $query = "SELECT * FROM courses ORDER BY views DESC LIMIT 3";  // Top 3 courses ordered by views
+        $query = "SELECT * FROM courses ORDER BY views DESC LIMIT 3";  
     $stmt = $db->prepare($query);
     $stmt->execute();  // Execute the query
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
