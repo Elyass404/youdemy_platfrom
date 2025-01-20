@@ -15,7 +15,7 @@
             <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6">Create an Account</h2>
 
             <!-- Registration Form -->
-            <form action="/register" method="POST">
+            <form action="../../controllers/authentication/registerCtrl.php" method="POST">
                 <!-- Name -->
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-semibold text-gray-700">Name</label>
