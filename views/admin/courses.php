@@ -149,7 +149,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             <td class="py-3 px-4 text-center"><a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a></td>
                             <td class="py-3 px-4 text-center">
                                 <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"><a href="../../controllers/courses/acceptCourseCtrl.php?id=<?= $course['id']?>">Accept</a></button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Refuse</button>
+                                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"><a href="../../controllers/courses/refuseCourseCtrl.php?id=<?= $course['id']?>">Refuse</a></button>
                             </td>
                         </tr>
 

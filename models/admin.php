@@ -28,6 +28,14 @@ class Admin extends User {
         return $this->crud->update($data, $conditions, 'courses'); 
     }
 
+
+    // refuse Course
+    public function refuseCourse($courseId) {
+        $data = ['course_status' => 'Refused']; // Change course_status to 'refused'
+        $conditions = ['id' => $courseId];
+        return $this->crud->update($data, $conditions, 'courses'); 
+    }
+
     // Add a new user 
     public function addUser($data) {
         return $this->crud->create($data, 'users'); 
