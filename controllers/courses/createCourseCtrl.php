@@ -17,17 +17,25 @@ $courseObj = new Course($db);
 
 
 $courseData = [
-    "title" => 'Learn divs in HTML', 
-    "description" => 'This you master the OOP using HTML ', 
-    "featured_image" => "https://images.unsplash.com/profile-1700009111141-05e9502e95c4image?w=150&dpr=1&crop=faces&bg=%23fff&h=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", 
-    "category_id" =>'8', 
-    "teacher_id" => '1', 
-    "content" => 'this is a text course'
+    "title" => $_POST['title'], 
+    "description" => $_POST['title'], 
+    "featured_image" => $_POST['title'], 
+    "category_id" =>$_POST['title'], 
+    "teacher_id" => $_POST['title']
 ];
 
-$tags = [1,2,3];
+if ($_POST['course_type']==="video"){
+    $courseData["video_content"] = $_POST['video_content'];
+    var_dump($courseData["video_content"]);
+}elseif($_POST['course_type']==="document"){
+    $courseData["content"]=$_POST['text_content'];
+    var_dump($courseData["content"]);
+}
 
-$course = $courseObj->create($courseData,$tags);
+$tags = [1,2,3]; 
+var_dump($courseData);
+
+// $course = $courseObj->create($courseData,$tags);
 
 
 

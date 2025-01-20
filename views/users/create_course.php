@@ -87,19 +87,19 @@ if (isset($_SESSION['role'])) {
                 <label for="course_type" class="block text-gray-700">Course Type</label>
                 <select id="course_type" name="course_type" required class="w-full p-3 border border-gray-300 rounded-md">
                     <option value="video">Video</option>
-                    <option value="text">Text Document</option>
+                    <option value="document">Text Document</option>
                 </select>
             </div>
 
             <!-- Content (Video URL or Text Content) -->
             <div id="video_input" class="mb-4">
                 <label for="content_video" class="block text-gray-700">Course Content (Video URL)</label>
-                <input type="url" id="content_video" name="content_video" placeholder="Enter YouTube URL or Video URL" class="w-full p-3 border border-gray-300 rounded-md">
+                <input type="url" id="content_video" name="video_content" placeholder="Enter YouTube URL or Video URL" class="w-full p-3 border border-gray-300 rounded-md">
             </div>
 
             <div id="text_input" class="mb-4 hidden">
                 <label for="content_text" class="block text-gray-700">Course Content (Text Content)</label>
-                <textarea id="content_text" name="content_text" rows="6" placeholder="Write course content here" class="w-full p-3 border border-gray-300 rounded-md"></textarea>
+                <textarea id="content_text" name="text_content" rows="6" placeholder="Write course content here" class="w-full p-3 border border-gray-300 rounded-md"></textarea>
             </div>
 
             <!-- Featured Image -->
@@ -166,7 +166,7 @@ if (isset($_SESSION['role'])) {
             if (this.value === 'video') {
                 videoInput.classList.remove('hidden');
                 textInput.classList.add('hidden');
-            } else if (this.value === 'text') {
+            } else if (this.value === 'document') {
                 textInput.classList.remove('hidden');
                 videoInput.classList.add('hidden');
             }
