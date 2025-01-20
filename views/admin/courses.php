@@ -192,8 +192,8 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
                             <td class="py-3 px-4 text-center">
                                 <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
-                                <button class="text-yellow-600 hover:underline ml-3">Modify</button>
-                                <button class="text-red-600 hover:underline ml-3">Delete</button>
+                                <a href="../../controllers/courses/modifyCourseCtrl.php?id=<?= $course['id']?>" class="text-yellow-600 hover:underline ml-3">Modify</a>
+                                <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="text-red-600 hover:underline ml-3">Delete</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -231,8 +231,8 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                             <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
                             <td class="py-3 px-4 text-center">
                                 <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
-                                <button class="text-yellow-600 hover:underline ml-3">Modify</button>
-                                <button class="text-red-600 hover:underline ml-3">Delete</button>
+                                <a href="../../controllers/courses/modifyCourseCtrl.php?id=<?= $course['id']?>" class="text-yellow-600 hover:underline ml-3">Modify</a>
+                                <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="text-red-600 hover:underline ml-3">Delete</a>
                             </td>
                         </tr>
 
