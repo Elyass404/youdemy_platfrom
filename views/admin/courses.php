@@ -27,7 +27,7 @@ $totalEnrolledCourses= Course::countEnrolledCourses($db);
 $topCourses= Course::topCourses($db);
 
 
-var_dump($pendingCourses);
+// var_dump($pendingCourses);
 // var_dump($textCourses);
 // var_dump($videoCourses);
 // var_dump($textCourses[0]['teacher_name']);
@@ -164,82 +164,114 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
             </div>
 
             <!-- Courses Table (Text-based) -->
-            <div id="text-courses" class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6">Text-Based Courses</h3>
-                <table class="min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr class="text-left bg-gray-100">
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">ID</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Title</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Teacher</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Date of Creation</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Category</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Status</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+<div id="text-courses" class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-6">Text-Based Courses</h3>
+    <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+            <tr class="text-left bg-gray-100">
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">ID</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Title</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Teacher</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Date of Creation</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Category</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Status</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($textCourses as $course): ?>
+                <tr class="border-b">
+                    <td class="py-3 px-4 text-center"><?= $course['id']?></td>
+                    <td class="py-3 px-4 text-center"><?= $course['title']?></td>
+                    <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
+                    <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="bg-green-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span>
+                    </td>
+                    
+                    <!-- Course Status Column with Modify Button -->
+                    <td class="py-3 px-4 text-center">
+                        <span id="status-text-<?= $course['id']?>" class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span>
 
-                        <?php 
-                            foreach($textCourses as $course):
-                        ?>
-                        <tr class="border-b">
-                            <td class="py-3 px-4 text-center"><?= $course['id']?></td>
-                            <td class="py-3 px-4 text-center"><?= $course['title']?></td>
-                            <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
-                            <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
-                            <td class="py-3 px-4 text-center"><span class="bg-green-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
-                            <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
-                            <td class="py-3 px-4 text-center">
-                                <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
-                                <a href="../../controllers/courses/modifyCourseCtrl.php?id=<?= $course['id']?>" class="text-yellow-600 hover:underline ml-3">Modify</a>
-                                <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="text-red-600 hover:underline ml-3">Delete</a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+                        <!-- Hidden Select Input with Save/Cancel -->
+                        <div id="status-select-container-<?= $course['id']?>" class="hidden">
+                            <form method="post" action="../../controllers/courses/modifyCourseCtrl.php?id=<?= $course['id']?>">
+                                <select name="course_status" class="px-2 py-1">
+                                    <option value="accepted" <?= $course['course_status'] == 'accepted' ? 'selected' : '' ?>>Accepted</option>
+                                    <option value="refused" <?= $course['course_status'] == 'refused' ? 'selected' : '' ?>>Refused</option>
+                                    <option value="pending" <?= $course['course_status'] == 'pending' ? 'selected' : '' ?>>Pending</option>
+                                </select>
+                                <button type="submit" name="save" class="bg-blue-500 text-white px-4 py-1 rounded-md">Save</button>
+                                <button type="button" class="bg-gray-500 text-white px-4 py-1 rounded-md cancel-btn">Cancel</button>
+                            </form>
+                        </div>
+                    </td>
+
+                    <!-- Actions Column with Modify Button -->
+                    <td class="py-3 px-4 text-center">
+                        <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
+                        <button class="text-yellow-600 hover:underline ml-3 modify-btn" data-course-id="<?= $course['id'] ?>">Modify</button>
+                        <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="text-red-600 hover:underline ml-3">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
             <!-- Courses Table (Video-based) -->
             <div id="video-courses" class="bg-white p-6 rounded-lg shadow-md mb-8 hidden">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6">Video-Based Courses</h3>
-                <table class="min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr class="text-left bg-gray-100">
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">ID</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Title</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Teacher</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Date of Creation</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Category</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Status</th>
-                            <th class="py-2 px-4 text-sm font-semibold text-gray-700">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+    <h3 class="text-2xl font-semibold text-gray-800 mb-6">Video-Based Courses</h3>
+    <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+            <tr class="text-left bg-gray-100">
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">ID</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Title</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Teacher</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Date of Creation</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Category</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Status</th>
+                <th class="py-2 px-4 text-sm font-semibold text-gray-700">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($videoCourses as $course): ?>
+            <tr class="border-b">
+                <td class="py-3 px-4 text-center"><?= $course['id']?></td>
+                <td class="py-3 px-4 text-center"><?= $course['title']?></td>
+                <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
+                <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
+                <td class="py-3 px-4 text-center"><span class="bg-yellow-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
+                
+                <!-- Course Status Column with Modify Button -->
+                <td class="py-3 px-4 text-center">
+                    <span id="status-text-<?= $course['id']?>" class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span>
+                    
+                    <!-- Hidden Select Input with Save/Cancel -->
+                    <div id="status-select-container-<?= $course['id']?>" class="hidden">
+                        <form method="POST" action="../../controllers/courses/modifyCourseCtrl.php?id=<?= $course['id']?>">
+                            <select name="course_status" class="px-2 py-1">
+                                <option value="accepted" <?= $course['course_status'] == 'accepted' ? 'selected' : '' ?>>Accepted</option>
+                                <option value="refused" <?= $course['course_status'] == 'refused' ? 'selected' : '' ?>>Refused</option>
+                                <option value="pending" <?= $course['course_status'] == 'pending' ? 'selected' : '' ?>>Pending</option>
+                            </select>
+                            <button type="submit" name="save" class="bg-blue-500 text-white px-4 py-1 rounded-md">Save</button>
+                            <button type="button" class="bg-gray-500 text-white px-4 py-1 rounded-md cancel-btn">Cancel</button>
+                        </form>
+                    </div>
+                </td>
 
-                    <?php 
-                            foreach($videoCourses as $course):
-                    ?>
-
-                        <tr class="border-b">
-                            <td class="py-3 px-4 text-center"><?= $course['id']?></td>
-                            <td class="py-3 px-4 text-center"><?= $course['title']?></td>
-                            <td class="py-3 px-4 text-center"><?= $course['teacher_name']?></td>
-                            <td class="py-3 px-4 text-center"><?= $course['created_at']?></td>
-                            <td class="py-3 px-4 text-center"><span class="bg-yellow-400 px-2 py-1 rounded-md"><?= $course['category_name']?></span></td>
-                            <td class="py-3 px-4 text-center"><span class="bg-green-500 px-2 py-1 rounded-md"><?= $course['course_status']?></span></td>
-                            <td class="py-3 px-4 text-center">
-                                <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
-                                <a href="../../controllers/courses/modifyCourseCtrl.php?id=<?= $course['id']?>" class="text-yellow-600 hover:underline ml-3">Modify</a>
-                                <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="text-red-600 hover:underline ml-3">Delete</a>
-                            </td>
-                        </tr>
-
-                        <?php endforeach; ?>
-
-                    </tbody>
-                </table>
+                <!-- Actions Column with Modify Button -->
+                <td class="py-3 px-4 text-center">
+                    <a href="../users/course_page.php?id=<?=$course['id']?>" class="text-blue-600 hover:underline">View</a>
+                    <button class="text-yellow-600 hover:underline ml-3 modify-btn" data-course-id="<?= $course['id'] ?>">Modify</button>
+                    <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="text-red-600 hover:underline ml-3">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
             </div>
 
         </div>
@@ -263,6 +295,31 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                 document.querySelector('h3.text-2xl').textContent = "Text-Based Courses";
             }
         }
+
+
+
+
+
+        document.querySelectorAll('.modify-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.dataset.courseId;
+
+            // Show the select input and hide the status text
+            document.getElementById('status-text-' + courseId).classList.add('hidden');
+            document.getElementById('status-select-container-' + courseId).classList.remove('hidden');
+        });
+    });
+
+    // Cancel button functionality
+    document.querySelectorAll('.cancel-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const courseId = this.closest('form').querySelector('input[name="course_id"]').value;
+
+            // Hide the select input and show the status text again
+            document.getElementById('status-text-' + courseId).classList.remove('hidden');
+            document.getElementById('status-select-container-' + courseId).classList.add('hidden');
+        });
+    });
 
     </script>
 
