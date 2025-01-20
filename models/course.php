@@ -34,6 +34,17 @@ class Course {
         $stmt->bindParam(':content', $data['content']);
     
         $result = $stmt->execute();
+
+        if ($result) {
+            // get the last inserted article ID
+            $courseId = $this->db->lastInsertId();
+
+         // insert the tags into the article_tags table
+            foreach ($tags as $tagId) {
+                $this->crud->create(['course_id' => $courseId, 'tag_id' => $tagId], 'course_tags');
+            }
+        }
+
         return $result;
     }
     
@@ -56,6 +67,17 @@ class Course {
         $stmt->bindParam(':video_content', $data['video_content']);
     
         $result = $stmt->execute();
+
+        if ($result) {
+            // get the last inserted article ID
+            $courseId = $this->db->lastInsertId();
+
+         // insert the tags into the article_tags table
+            foreach ($tags as $tagId) {
+                $this->crud->create(['course_id' => $courseId, 'tag_id' => $tagId], 'course_tags');
+            }
+        }
+
         return $result;
     }
 

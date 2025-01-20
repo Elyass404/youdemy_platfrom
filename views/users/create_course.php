@@ -5,7 +5,7 @@ session_start();
 
 // Define roles as constants to avoid magic strings
 define("ROLE_TEACHER", "teacher");
-$_SESSION['role'] = "helo" ;
+$_SESSION['role'] = "teacher" ;
 // Assuming you are checking user role before accessing the page
 if (isset($_SESSION['role'])) {
     // Check if the user is a teacher
@@ -56,7 +56,7 @@ if (isset($_SESSION['role'])) {
 
         <h2 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Add New Course</h2>
 
-        <form action="/path/to/your/handler" method="POST" enctype="multipart/form-data">
+        <form action="../../controllers/courses/createCourseCtrl.php" method="POST" enctype="multipart/form-data">
 
             <!-- Title -->
             <div class="mb-4">
