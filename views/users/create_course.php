@@ -1,7 +1,24 @@
 <?php
 
-
 session_start();
+require __DIR__.'/../../vendor/autoload.php'; 
+
+
+use Config\Connection;
+use Models\Tag;
+use Models\Category;
+
+$database = new Connection();
+$db = $database->getConnection();
+
+$categoryObj = new Category($db);
+$categories = $categoryObj-> read();
+
+$tagObj = new Tag($db);
+$tags = $tagObj-> read();
+
+var_dump($tags);
+var_dump($categories);
 
 // Define roles as constants to avoid magic strings
 define("ROLE_TEACHER", "teacher");
@@ -74,11 +91,11 @@ if (isset($_SESSION['role'])) {
             <div class="mb-4">
                 <label for="category" class="block text-gray-700">Category</label>
                 <select id="category" name="category" required class="w-full p-3 border border-gray-300 rounded-md">
-                    <!-- Options should be dynamically generated from your categories -->
-                    <option value="1">Web Development</option>
-                    <option value="2">Data Science</option>
-                    <option value="3">Design</option>
-                    <option value="4">Marketing</option>
+                    <?php
+                    foreach($categories as $category):
+                    ?>
+                    <option value="<?= $category['id']?>"><?= $category['category_name']?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
 
@@ -113,27 +130,13 @@ if (isset($_SESSION['role'])) {
     <label class="block text-gray-700">Select Tags</label>
     <div class="space-y-2 mt-2">
         <!-- Checkbox options should be dynamically generated from your tags -->
+
+        <?php foreach($tags as $tag):?>
         <div class="flex items-center">
-            <input type="checkbox" id="tag1" name="tags[]" value="1" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-            <label for="tag1" class="ml-2 text-gray-700">Web</label>
+            <input type="checkbox" id="tag-<?= $tag["id"]?>" name="tags[]" value="<?= $tag["id"]?>" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+            <label for="tag-<?= $tag["id"]?>" class="ml-2 text-gray-700"><?= $tag["tag_name"]?></label>
         </div>
-        <div class="flex items-center">
-            <input type="checkbox" id="tag2" name="tags[]" value="2" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-            <label for="tag2" class="ml-2 text-gray-700">Development</label>
-        </div>
-        <div class="flex items-center">
-            <input type="checkbox" id="tag3" name="tags[]" value="3" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-            <label for="tag3" class="ml-2 text-gray-700">Programming</label>
-        </div>
-        <div class="flex items-center">
-            <input type="checkbox" id="tag4" name="tags[]" value="4" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-            <label for="tag4" class="ml-2 text-gray-700">React</label>
-        </div>
-        <div class="flex items-center">
-            <input type="checkbox" id="tag5" name="tags[]" value="5" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-            <label for="tag5" class="ml-2 text-gray-700">Python</label>
-        </div>
-        <!-- Add more tags dynamically -->
+        <?php endforeach; ?>
     </div>
 </div>
 

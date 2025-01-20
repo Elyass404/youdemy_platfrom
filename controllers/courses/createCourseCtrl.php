@@ -18,10 +18,10 @@ $courseObj = new Course($db);
 
 $courseData = [
     "title" => $_POST['title'], 
-    "description" => $_POST['title'], 
-    "featured_image" => $_POST['title'], 
-    "category_id" =>$_POST['title'], 
-    "teacher_id" => $_POST['title']
+    "description" => $_POST['description'], 
+    "featured_image" => $_POST['featured_image'], 
+    "category_id" =>11, 
+    "teacher_id" => 2
 ];
 
 if ($_POST['course_type']==="video"){
@@ -35,7 +35,7 @@ if ($_POST['course_type']==="video"){
 $tags = [1,2,3]; 
 var_dump($courseData);
 
-// $course = $courseObj->create($courseData,$tags);
+$course = $courseObj->create($courseData,$tags);
 
 
 
