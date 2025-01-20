@@ -37,23 +37,8 @@ class User {
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user;
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Start session 
-            session_start();
-            $_SESSION['id'] = $user['id'];
-            $_SESSION['role'] = $user['role'];
-            $this->id = $user['id']; 
-
-            if($_SESSION['role'] == "Admin" || $_SESSION['role'] == "Teacher" ){
-                header("Location: views/users/dashboard.php");
-                exit;
-            }elseif($_SESSION['role'] == "Student "){
-                // header("Location: views/users/courses_catalog.php");
-            }
-            return true;
-        }
-        return false;
     }
 
     public static function logout() {

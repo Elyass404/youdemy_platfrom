@@ -97,4 +97,15 @@ ADD COLUMN course_status ENUM('pending', 'accepted', 'refused') NOT NULL DEFAULT
 ALTER TABLE courses
 DROP COLUMN status;
 
+-- First, drop the existing foreign key constraint on the teacher_id
+ALTER TABLE courses 
+DROP FOREIGN KEY teacher_id; 
+
+-- Now, add a new foreign key constraint with ON DELETE SET NULL
+ALTER TABLE courses
+ADD CONSTRAINT teacher_id 
+FOREIGN KEY (teacher_id) 
+REFERENCES users(id) ON DELETE SET NULL;
+
+
 

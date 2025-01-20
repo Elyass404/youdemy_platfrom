@@ -25,7 +25,7 @@ unset($_SESSION['message']);
     <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Login to Your Account</h2>
 
-        <form action="/login" method="POST">
+        <form action="../../controllers/authentication/loginCtrl.php" method="POST">
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
                 <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-md" placeholder="Enter your email" required>
