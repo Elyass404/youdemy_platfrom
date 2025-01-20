@@ -1,13 +1,11 @@
 
 <?php 
 session_start();
-if (isset($_SESSION['error'])){
+if (isset($_SESSION['message'])){
 
- var_dump ( $_SESSION['error']);
-
+ echo ( $_SESSION['message']);
+unset($_SESSION['message']);
 }
-unset($_SESSION['error']); // Clear the error after displaying it 
-
 
 
 ?>
