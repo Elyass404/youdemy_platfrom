@@ -2,84 +2,68 @@
 namespace Models;
 use Models\Crud;
 use Models\User;
-use Models\Course;
 use PDO;
 use PDOException;
 
 
 class Teacher extends User {
     protected $crud;
-    protected $course;
+    protected $db;
 
     // Constructor to initialize the CRUD object
     public function __construct($db) {
         $this->crud = new CRUD($db);
-        $this->course = new Course($db);
+        $this->db = $db;
     }
 
     
-
-    // add Course
-    public function createCourse($data,$tags = []) {
-        return $this->course->create($data, $tags); 
-    }
-
-
-    // refuse Course
-    public function refuseCourse($courseId) {
-        $data = ['course_status' => 'Refused']; // Change course_status to 'refused'
-        $conditions = ['id' => $courseId];
-        return $this->crud->update($data, $conditions, 'courses'); 
-    }
-
-    // Add a new user 
-    public function addUser($data) {
-        return $this->crud->create($data, 'users'); 
-    }
-
-    // Update user information 
-    public function updateUser($data, $conditions) {
-        return $this->crud->update($data, $conditions, 'users'); 
-    }
-
-    // Delete a user 
-    public function deleteUser($conditions) {
-        return $this->crud->delete($conditions, 'users'); 
-    }
-
-    // Modify course details
-    public function modifyCourse($data, $conditions) {
-        return $this->crud->update($data, $conditions, 'courses'); 
-    }
-
-    // Get the total number of students
-    public function totalStudents($db) {
-        $query = "SELECT COUNT(*) as total FROM users WHERE role = 'student' AND status = 'activated'";
-        $stmt = $db->prepare($query);
+    // Get total number of courses owned by the teacher
+    public function totalOwnCourses($teacherId) {
+        $query = "SELECT COUNT(*) as total_courses FROM courses WHERE teacher_id = :teacher_id";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':teacher_id', $teacherId);
         $stmt->execute();
+        
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['total'];
+        return $result['total_courses'];
     }
 
-    // Get the total number of teachers
-    public function totalTeachers($db) {
-        $query = "SELECT COUNT(*) as total FROM users WHERE role = 'teacher' AND status = 'activated'";
-        $stmt = $db->prepare($query);
+    // Get total number of pending courses created by the teacher
+    public function pendingOwnCourses($teacherId) {
+        $query = "SELECT COUNT(*) as total_pending_courses FROM courses WHERE teacher_id = :teacher_id AND course_status = 'pending'";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':teacher_id', $teacherId);
         $stmt->execute();
+        
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['total'];
+        return $result['total_pending_courses'];
     }
 
-    // Get the total number of courses
-    public function totalCourses($db) {
-        $query = "SELECT COUNT(*) as total FROM courses";
-        $stmt = $db->prepare($query);
+    // Get total number of enrolled students for the courses created by the teacher
+    public function totalEnrolledStudents($teacherId) {
+        $query = "
+            SELECT COUNT(DISTINCT enrolled_courses.course_id) as total_enrolled
+            FROM enrolled_courses
+            JOIN courses ON courses.id = enrolled_courses.course_id
+            WHERE courses.teacher_id = :teacher_id
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':teacher_id', $teacherId);
         $stmt->execute();
+        
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['total'];
+        return $result['total_enrolled'];
     }
 }
 
 
 
 ?>
+
+
+select * 
+from users 
+where id not in (select distinct user_id from enrolled_courses);

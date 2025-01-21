@@ -151,7 +151,7 @@ var_dump($_SESSION['teacher_id'])
 
             <!-- Submit Button -->
             <div class="mb-4 text-center">
-                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-md text-lg">Add Course</button>
+                <button type="submit" class=" w-full text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-md text-lg">Add Course</button>
             </div>
 
         </form>
