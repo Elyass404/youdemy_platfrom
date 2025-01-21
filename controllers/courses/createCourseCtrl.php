@@ -98,7 +98,7 @@ if (isset($_POST['title'], $_POST['description'], $_POST['featured_image'], $_PO
     // Handle case when some required fields are not set
     $_SESSION['message'] = "All required fields must be filled out.";
     header('Location: ../../views/users/create_course.php');
-    exit;
+    exit; 
 }
 
 ?>
