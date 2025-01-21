@@ -19,8 +19,8 @@ class Course {
     public function createByDocument($data, $tags = []) {
         $query = "
             INSERT INTO courses 
-            (title, description, featured_image, category_id, teacher_id, content, video_content)
-            VALUES (:title, :description, :featured_image, :category_id, :teacher_id, :content, NULL)
+            (title, description, featured_image, category_id, teacher_id, content, video_content, course_type)
+            VALUES (:title, :description, :featured_image, :category_id, :teacher_id, :content, NULL, :course_type)
         ";
     
         $stmt = $this->db->prepare($query);
@@ -32,6 +32,7 @@ class Course {
         $stmt->bindParam(':category_id', $data['category_id']);
         $stmt->bindParam(':teacher_id', $data['teacher_id']);
         $stmt->bindParam(':content', $data['content']);
+        $stmt->bindParam(':course_type', $data['course_type']);
     
         $result = $stmt->execute();
 
@@ -45,15 +46,15 @@ class Course {
             }
         }
 
-        return $result;
+        return $courseId;
     }
     
 
     public function createByVideo($data, $tags = [],$type) {
         $query = "
             INSERT INTO courses 
-            (title, description, featured_image, category_id, teacher_id, content, video_content)
-            VALUES (:title, :description, :featured_image, :category_id, :teacher_id, NULL, :video_content)
+            (title, description, featured_image, category_id, teacher_id, content, video_content, course_type)
+            VALUES (:title, :description, :featured_image, :category_id, :teacher_id, NULL, :video_content, :course_type)
         ";
     
         $stmt = $this->db->prepare($query);
@@ -65,6 +66,7 @@ class Course {
         $stmt->bindParam(':category_id', $data['category_id']);
         $stmt->bindParam(':teacher_id', $data['teacher_id']);
         $stmt->bindParam(':video_content', $data['video_content']);
+        $stmt->bindParam(':course_type', $data['course_type']);
     
         $result = $stmt->execute();
 
@@ -78,7 +80,7 @@ class Course {
             }
         }
 
-        return $result;
+        return $courseId;
     }
 
     public function readCertainCourses($conditions = []) {

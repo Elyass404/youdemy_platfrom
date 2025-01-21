@@ -3,6 +3,7 @@
 session_start();
 require __DIR__.'/../../vendor/autoload.php'; 
 
+$_SESSION['teacher_id']=2;
 
 use Config\Connection;
 use Models\Tag;
@@ -17,8 +18,8 @@ $categories = $categoryObj-> read();
 $tagObj = new Tag($db);
 $tags = $tagObj-> read();
 
-var_dump($tags);
-var_dump($categories);
+// var_dump($tags);
+// var_dump($categories);
 
 // Define roles as constants to avoid magic strings
 define("ROLE_TEACHER", "teacher");
@@ -39,6 +40,13 @@ if (isset($_SESSION['role'])) {
     header("Location: login.php");
     exit();
 }
+
+if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
+    echo "<script type='text/javascript'>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+
+var_dump($_SESSION['teacher_id'])
 
 ?>
 
