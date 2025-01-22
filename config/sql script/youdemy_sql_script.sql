@@ -1,5 +1,9 @@
 DROP DATABASE IF EXISTS youdemy;
 
+UPDATE users 
+set role = "Admin"
+where id = 1;
+
 -- Create the database
 CREATE DATABASE youdemy
 
@@ -44,8 +48,8 @@ CREATE TABLE courses (
     featured_image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     teacher_id INT NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES categories(id),
-    FOREIGN KEY (teacher_id) REFERENCES users(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE ,
+    FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Creating the enrolled_courses table (many to many relatinship between students and courses)
@@ -75,7 +79,7 @@ ADD COLUMN video_content VARCHAR(255) DEFAULT NULL;
 ALTER TABLE courses
 ADD COLUMN course_type ENUM('Video', 'Document');
 
-
+-- --------------------------------------------------------------
 -- Drop the existing foreign key constraint
 ALTER TABLE courses
 DROP FOREIGN KEY courses_ibfk_1;
@@ -84,7 +88,7 @@ DROP FOREIGN KEY courses_ibfk_1;
 ALTER TABLE courses
 ADD CONSTRAINT courses_setnull 
 FOREIGN KEY (category_id) REFERENCES categories(id)
-ON DELETE SET NULL;
+ON DELETE CASCADE;
 
 --Changing the FOREIGN EY to accept null values , because when deleting a category in the categories table
 --the course should stay without deleting, even if the category doesnt exist 
@@ -99,13 +103,20 @@ DROP COLUMN status;
 
 -- First, drop the existing foreign key constraint on the teacher_id
 ALTER TABLE courses 
-DROP FOREIGN KEY teacher_id; 
+DROP COLUMN teacher_id; 
+
+ALTER TABLE courses 
+ADD COLUMN teacher_id;
 
 -- Now, add a new foreign key constraint with ON DELETE SET NULL
 ALTER TABLE courses
 ADD CONSTRAINT teacher_id 
 FOREIGN KEY (teacher_id) 
-REFERENCES users(id) ON DELETE SET NULL;
+REFERENCES users(id) ON DELETE CASCADE;
 
 
+ALTER TABLE courses DROP FOREIGN KEY teacher_id;
+
+
+drop DATABASE youdemy
 

@@ -13,9 +13,6 @@ $Message = '';
         $condition = ["id" => $_GET['id']];
         $courseObj = new Course($db);
 
-        // Check if the course exists before attempting to delete
-        $course = $courseObj->read($condition);
-        if (!empty($course)) {
             if ($courseObj->delete($condition)) {
                 $Message = "You deleted the course successfully.";
             } else {
@@ -24,9 +21,7 @@ $Message = '';
         } else {
             $Message = "There is no course with the provided ID to delete.";
         }
-    } else {
-        $Message = "No ID provided.";
-    }
+  
 
 ?>
 

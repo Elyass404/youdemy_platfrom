@@ -53,7 +53,6 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
 
 
 
-
 ?>
 
 
@@ -237,9 +236,9 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
                                 <div id="status-modify-<?= $teacher['id']?>" class="hidden">
                                 <form action="../../controllers/users/modifyUserCtrl.php?id=<?= $teacher['id']?>" method="POST">
                                     <select id="status-select-<?= $teacher['id']?>" name="user_status" class="border px-2 py-1 rounded-md">
-                                        <option value="activated" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Activated</option>
-                                        <option value="pending" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Pending</option>
-                                        <option value="banned" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Banned</option>
+                                        <option value="Activated" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Activated</option>
+                                        <option value="Pending" <?= $teacher['status'] == "Pending" ? "selected" : '' ?>>Pending</option>
+                                        <option value="Banned" <?= $teacher['status'] == "Banned" ? "selected" : '' ?>>Banned</option>
                                     </select>
                                     <button type="button" class="bg-red-500 text-white px-2 py-1 rounded ml-2" onclick="cancelModifyStatus(<?= $teacher['id']?>)">Cancel</button>
                                     <button type= "submit" class="bg-green-500 text-white px-2 py-1 rounded ml-2" onclick="saveStatus(<?= $teacher['id']?>)">Save</button>
