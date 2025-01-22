@@ -3,6 +3,7 @@ session_start();
 use Config\Connection;
 use Models\Course;
 use Models\Teacher;
+use Models\Tag;
 require __DIR__.'/../../vendor/autoload.php'; 
 
 $database = new Connection();
@@ -10,18 +11,18 @@ $db = $database->getConnection();
 
 $teacherObj = new Teacher($db);
 $courseObj = new Course($db);
+$tagObj = new Tag($db);
+
 $teacherId = $_SESSION['teacher_id'];
+
 $totalOwnCourses = $teacherObj->totalOwnCourses($teacherId);
 $pendingOwnCourses = $teacherObj->pendingOwnCourses($teacherId);
 $totalEnrolledStudents = $teacherObj->totalEnrolledStudents($teacherId);
 
 $pendingCourses= $courseObj->readCertainCourses(["course_status"=>"pending", "teacher_id"=>$teacherId]);
+$acceptedCourses = $courseObj->readCertainCourses(["course_status"=>"accepted", "teacher_id"=>$teacherId]);
 
-var_dump($pendingCourses);
-
-
-
-
+var_dump($acceptedCourses);
 
 
 
@@ -90,7 +91,7 @@ var_dump($pendingCourses);
                 </tr>
             </thead>
             <tbody>
-                <!-- Static row data, replace later -->
+                
                  <?php 
                  foreach($pendingCourses as $course):
                  ?>
@@ -115,17 +116,26 @@ var_dump($pendingCourses);
     <!-- Courses Cards Section -->
     <h2 class="text-2xl font-semibold mb-4">Created Courses</h2>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <!-- Static course card data, replace later -->
+        <?php 
+        foreach($acceptedCourses as $course):
+        ?>
         <div class="bg-white p-4 rounded-lg shadow-md">
-            <img src="https://images.unsplash.com/photo-1737069222401-afd3720775ae?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Course Image" class="w-full h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-xl font-semibold">Course 1</h3>
-            <p class="text-gray-500">Category 1</p>
+            <img src="<?= $course['featured_image'] ?>">
+            <h3 class="text-xl font-semibold"><?= $course['title']?></h3>
+            <p class="text-gray-500 te"><?= $course['category_name']?></p>
             <div class="mt-2">
                 <span class="text-sm text-gray-400">Tags: </span>
-                <span class="text-sm text-blue-500">Tag 1, Tag 2</span>
+                <?php 
+                $courseTags = Tag::getTags($course["id"],$db);
+                foreach($courseTags as $tag): ?>
+                <span class="text-sm text-gray-700  bg-gray-400 rounded-md py-1 px-2"><?= $tag["name"]?></span>
+                <?php endforeach; ?>
             </div>
             <div class="mt-4">
-                <p class="text-gray-500 text-sm">Total Students Enrolled: 50</p> <!-- Static data, replace later -->
+                <?php
+                $totalEnrollemnet = $courseObj ->readCourseWithEnrollement(["courses.id"=>$course["id"]]);
+                ?>
+                <p class="text-gray-500 text-sm">Enrolled students: <?= $totalEnrollemnet[0]['enrolled_students']?></p> <!-- Static data, replace later -->
             </div>
             <div class="mt-6 flex justify-between">
                 <a href="course_page.php?id=1" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">View</a>
@@ -133,6 +143,7 @@ var_dump($pendingCourses);
                 <a href="delete_course.php?id=1" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Delete</a>
             </div>
         </div>
+        <?php endforeach; ?>
         <div class="bg-white p-4 rounded-lg shadow-md">
             <img src="https://images.unsplash.com/photo-1737069222401-afd3720775ae?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Course Image" class="w-full h-48 object-cover rounded-lg mb-4">
             <h3 class="text-xl font-semibold">Course 2</h3>
