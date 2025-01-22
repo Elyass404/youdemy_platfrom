@@ -42,13 +42,6 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
 ?>
 
 
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

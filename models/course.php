@@ -84,7 +84,7 @@ class Course {
     }
 
     public function readCertainCourses($conditions = []) {
-        $query = "SELECT courses.*, users.name as teacher_name, categories.category_name as category_name
+        $query = "SELECT courses.*, users.name as teacher_name, categories.category_name as category_name, users.photo
         FROM courses
         LEFT JOIN users ON users.id = courses.teacher_id
         LEFT JOIN categories ON categories.id = courses.category_id";

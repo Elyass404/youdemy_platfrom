@@ -64,6 +64,3 @@ class Teacher extends User {
 ?>
 
 
-select * 
-from users 
-where id not in (select distinct user_id from enrolled_courses);

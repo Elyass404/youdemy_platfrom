@@ -4,6 +4,9 @@ use Config\Connection;
 use Models\Course;
 use Models\Teacher;
 use Models\Tag;
+
+$_SESSION['teacher_id']=2;
+
 require __DIR__.'/../../vendor/autoload.php'; 
 
 $database = new Connection();
@@ -22,9 +25,9 @@ $totalEnrolledStudents = $teacherObj->totalEnrolledStudents($teacherId);
 $pendingCourses= $courseObj->readCertainCourses(["course_status"=>"pending", "teacher_id"=>$teacherId]);
 $acceptedCourses = $courseObj->readCertainCourses(["course_status"=>"accepted", "teacher_id"=>$teacherId]);
 
-var_dump($acceptedCourses);
+$teacherInfo = $teacherObj->read(["id"=>$teacherId]);
 
-
+// var_dump($acceptedCourses);
 
 ?>
 
@@ -43,13 +46,11 @@ var_dump($acceptedCourses);
 <!-- Navbar -->
 <nav class="bg-gray-800 p-4 flex justify-between items-center text-white">
     <div class="flex items-center">
-        <img src="your_logo_here.png" alt="Logo" class="w-10 h-10 mr-2">
-        <span class="text-xl font-semibold">Teacher Dashboard</span>
+        <span class="text-xl font-semibold">Welcome Back, <?= strtoupper($teacherInfo[0]["name"])?> </span>
     </div>
     <div class="flex items-center space-x-4">
-        <span class="text-lg">Teacher</span>
-        <img src="default_profile_image.png" alt="Profile" class="w-8 h-8 rounded-full border-2 border-white">
-        <a href="logout.php" class="text-red-500 hover:text-red-700">Logout</a>
+        <img src="<?= $teacherInfo[0]["photo"]?>" alt="Profile" class="w-8 h-8 rounded-full border-2 border-white">
+        <a href="../../controllers/authentication/logoutCtrl.php" class="text-red-500 hover:text-red-700">Logout</a>
     </div>
 </nav>
 

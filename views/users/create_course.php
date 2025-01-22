@@ -28,7 +28,7 @@ $_SESSION['role'] = "teacher" ;
 if (isset($_SESSION['role'])) {
     // Check if the user is a teacher
     if ($_SESSION['role'] === ROLE_TEACHER) {
-        echo "Hello, teacher! You are logged in.";
+        // echo "Hello, teacher! You are logged in.";
     } else {
         // Redirect to login page if the role is not 'teacher'
         $_SESSION['error'] = "You must be a teacher to access this page.";
@@ -46,7 +46,7 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
     unset($_SESSION['message']);
 }
 
-var_dump($_SESSION['teacher_id'])
+// var_dump($_SESSION['teacher_id'])
 
 ?>
 
@@ -68,10 +68,6 @@ var_dump($_SESSION['teacher_id'])
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <h1 class="text-white text-xl font-bold">Youdemy</h1>
             <div class="flex items-center space-x-4">
-                <div class="flex items-center space-x-2">
-                    <input type="text" placeholder="Search Courses..." class="p-2 rounded-md w-64" />
-                    <button class="text-white bg-blue-500 px-4 py-2 rounded-md">Search</button>
-                </div>
             </div>
         </div>
     </header>
