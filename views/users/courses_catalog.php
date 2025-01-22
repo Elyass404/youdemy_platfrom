@@ -1,7 +1,20 @@
 <?php
+session_start();
+use Config\Connection;
+use Models\Course;
+use Models\Student;
+use Models\Tag;
 
-echo "Hello this is the Courses catalog limaaaaaaaaaaaaaaaaakkk!"
 
+
+require __DIR__.'/../../vendor/autoload.php'; 
+
+$database = new Connection();
+$db = $database->getConnection();
+
+$courseObj= new Course($db);
+$allCourses = $courseObj->readCertainCourses();
+// var_dump($allCourses);
 
 ?>
 
@@ -61,26 +74,18 @@ echo "Hello this is the Courses catalog limaaaaaaaaaaaaaaaaakkk!"
             <h3 class="text-2xl font-semibold mb-8">Explore Our Courses</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Course Card 1 -->
+                 <?php
+                 foreach($allCourses as $course)?>
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    <img src="course-image.jpg" alt="Course Image" class="w-full h-40 object-cover">
+                    <img src="<?=$course['featured_image']?>" alt="Course Image" class="w-full h-40 object-cover">
                     <div class="p-4">
-                        <h4 class="text-lg font-semibold">Course Title 1</h4>
-                        <p class="text-sm text-gray-500">by Author Name</p>
+                        <h4 class="text-lg font-semibold"><?=$course['title']?></h4>
+                        <p class="text-sm text-gray-500"><?=$course['teacher_name']?></p>
                         <p class="text-sm text-gray-400 mt-2">Enrolled: 120 students</p>
-                        <button class="mt-4 w-full py-2 bg-blue-500 text-white rounded-md">Go to Course</button>
+                        <p class="text-sm text-gray-700 mt-2"><?=$course['description']?></p>
+                        <button class="mt-4 w-full py-2 bg-blue-500 text-white rounded-md"><a href="../../controllers/users/enrollCtrl.php?id=<?= $course['id']?>">Enrolle Course</a></button>
                     </div>
                 </div>
-                <!-- Course Card 2 -->
-                <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    <img src="course-image.jpg" alt="Course Image" class="w-full h-40 object-cover">
-                    <div class="p-4">
-                        <h4 class="text-lg font-semibold">Course Title 2</h4>
-                        <p class="text-sm text-gray-500">by Author Name</p>
-                        <p class="text-sm text-gray-400 mt-2">Enrolled: 90 students</p>
-                        <button class="mt-4 w-full py-2 bg-blue-500 text-white rounded-md">Go to Course</button>
-                    </div>
-                </div>
-                <!-- More Course Cards can go here, following the same structure -->
             </div>
         </div>
     </section>

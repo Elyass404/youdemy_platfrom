@@ -1,8 +1,14 @@
 <?php
+session_start();
 use Config\Connection;
 use Models\Course;
 use Models\Tag;
 require __DIR__.'/../../vendor/autoload.php'; 
+
+
+
+
+
 
 $database = new Connection();
 $db = $database->getConnection();
@@ -12,12 +18,6 @@ if(isset ($_GET['id'])){
 
 };
 
-if(isset ($_SESSION)){
-    echo " you are log in_______";
-
-}else{
-    echo"you should not be in this page get out_______";
-};
 
 
 $courseObj = new Course($db);
@@ -27,6 +27,12 @@ $course = $courseObj->readCourseWithEnrollement(["courses.id" => $courseId]);
 // var_dump($course['video_content']);
 
 // var_dump(tag::getTags($courseId,$db)) ;
+if (!isset($_SESSION['role']) && !($_SESSION['role'] === "teacher" || $_SESSION['role'] === "student" || $_SESSION['role'] === "admin")) {
+    header("Location: ../../views/users/register.php");
+    exit;
+    } 
+    
+
 
 
 ?>

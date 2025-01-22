@@ -3,7 +3,6 @@
 session_start();
 require __DIR__.'/../../vendor/autoload.php'; 
 
-$_SESSION['teacher_id']=2;
 
 use Config\Connection;
 use Models\Tag;
@@ -45,6 +44,11 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
     echo "<script type='text/javascript'>alert('" . $_SESSION['message'] . "');</script>";
     unset($_SESSION['message']);
 }
+
+if (!isset($_SESSION['role']) && !($_SESSION['role'] === "teacher")) {
+    header("Location: ../../views/users/register.php");
+    exit;
+    } 
 
 // var_dump($_SESSION['teacher_id'])
 
