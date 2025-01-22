@@ -16,6 +16,9 @@ class Teacher extends User {
         $this->db = $db;
     }
 
+    public function viewUsers($conditions){
+        return $this->crud->read($conditions, 'users');
+    }
     
     // Get total number of courses owned by the teacher
     public function totalOwnCourses($teacherId) {

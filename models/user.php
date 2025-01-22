@@ -7,7 +7,7 @@ use PDOException;
 require __DIR__.'/../vendor/autoload.php'; 
 
 
-class User {
+abstract class User {
     protected $id;  
     protected $name;
     protected $email;
@@ -23,6 +23,8 @@ class User {
         $this->crud = new CRUD($db);
 
     }
+
+    abstract public function viewUsers($conditions);
 
     public function register($data) {
         // Hash the password using Argon2

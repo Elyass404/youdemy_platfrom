@@ -25,8 +25,10 @@ $totalCompletedCourses = $studentObj->totalCompletedCourses($studentId);
 $incompletedCourses=$studentObj->inProgressCourses($studentId);
 $completedCourses=$studentObj->completedCourses($studentId);
 
+$studentInfo=$studentObj->viewUsers(["id"=>$studentId]);
 
-// var_dump($completedCourses);
+
+// var_dump($studentInfo);
 
 ?>
 
@@ -46,8 +48,8 @@ $completedCourses=$studentObj->completedCourses($studentId);
         <div class="text-2xl font-semibold text-gray-800">Student Dashboard</div>
         <div class="flex items-center space-x-4">
             <a href="courses_catalog.php" class="text-gray-600 hover:text-gray-800">Home</a>
-            <a href="/logout" class="text-gray-600 hover:text-gray-800">Logout</a>
-            <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-full w-10 h-10">
+            <a href="../../controllers/authentication/logoutCtrl.php" class="text-gray-600 hover:text-gray-800">Logout</a>
+            <img src="<?=$studentInfo[0]['photo']?>" alt="Profile" class="rounded-full w-10 h-10">
         </div>
     </div>
 
@@ -93,24 +95,16 @@ $completedCourses=$studentObj->completedCourses($studentId);
         <div>
             <h3 class="text-2xl font-semibold text-gray-800 mb-6">Completed Courses</h3>
             <div class="grid grid-cols-3 gap-6">
+            <?php
+                foreach($completedCourses as $complete):
+                ?>
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <img src="https://via.placeholder.com/150" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
                     <h4 class="text-lg font-semibold text-gray-800">Course Title 1</h4>
                     <p class="text-sm text-gray-600">Short description of the course...</p>
                     <a href="/course/view/1" class="text-white bg-blue-500 rounded px-4 py-2 mt-4 inline-block text-center hover:bg-blue-600">View Course</a>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <img src="https://via.placeholder.com/150" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
-                    <h4 class="text-lg font-semibold text-gray-800">Course Title 2</h4>
-                    <p class="text-sm text-gray-600">Short description of the course...</p>
-                    <a href="/course/view/2" class="text-white bg-blue-500 rounded px-4 py-2 mt-4 inline-block text-center hover:bg-blue-600">View Course</a>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <img src="https://via.placeholder.com/150" alt="Course Image" class="w-full h-40 object-cover rounded-lg mb-4">
-                    <h4 class="text-lg font-semibold text-gray-800">Course Title 3</h4>
-                    <p class="text-sm text-gray-600">Short description of the course...</p>
-                    <a href="/course/view/3" class="text-white bg-blue-500 rounded px-4 py-2 mt-4 inline-block text-center hover:bg-blue-600">View Course</a>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
 
