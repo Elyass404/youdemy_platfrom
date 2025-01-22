@@ -14,6 +14,11 @@ class Admin extends User {
         $this->crud = new CRUD($db);
     }
 
+    // View Users
+    public function viewUsers($conditions) {
+        return $this->crud->update($conditions, 'users'); 
+    }
+
     // Validate teacher 
     public function validateTeacher($teacherId) {
         $data = ['status' => 'activated']; // Change status to 'activated'

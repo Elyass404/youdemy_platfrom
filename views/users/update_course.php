@@ -92,7 +92,7 @@ var_dump($_SESSION['teacher_id'])
 
         <h2 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Modify The course "<?= $course[0]["title"]?>"</h2>
 
-        <form action="../../controllers/courses/createCourseCtrl.php" method="POST" enctype="multipart/form-data">
+        <form action="../../controllers/courses/updateCourseCtrl.php?id=<?= $course[0]["id"]?>" method="POST" enctype="multipart/form-data">
 
             <!-- Title -->
             <div class="mb-4">
@@ -165,7 +165,7 @@ var_dump($_SESSION['teacher_id'])
 
             <!-- Submit Button -->
             <div class="mb-4 text-center">
-                <button type="submit" class=" w-full text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-md text-lg">Add Course</button>
+                <button type="submit" class=" w-full text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-md text-lg">Update Course</button>
             </div>
 
         </form>
