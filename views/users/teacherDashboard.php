@@ -120,7 +120,7 @@ var_dump($acceptedCourses);
         foreach($acceptedCourses as $course):
         ?>
         <div class="bg-white p-4 rounded-lg shadow-md">
-            <img src="<?= $course['featured_image'] ?>">
+            <img class="w-full h-48 object-cover rounded-lg mb-4" src="<?= $course['featured_image'] ?>">
             <h3 class="text-xl font-semibold"><?= $course['title']?></h3>
             <p class="text-gray-500 te"><?= $course['category_name']?></p>
             <div class="mt-2">
@@ -139,28 +139,11 @@ var_dump($acceptedCourses);
             </div>
             <div class="mt-6 flex justify-between">
                 <a href="course_page.php?id=1" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">View</a>
-                <a href="update_course.php?id=1" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Update</a>
-                <a href="delete_course.php?id=1" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Delete</a>
+                <a href="update_course.php?id=<?= $course['id']?>" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Update</a>
+                <a href="../../controllers/courses/deleteCourseCtrl.php?id=<?= $course['id']?>" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Delete</a>
             </div>
         </div>
         <?php endforeach; ?>
-        <div class="bg-white p-4 rounded-lg shadow-md">
-            <img src="https://images.unsplash.com/photo-1737069222401-afd3720775ae?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Course Image" class="w-full h-48 object-cover rounded-lg mb-4">
-            <h3 class="text-xl font-semibold">Course 2</h3>
-            <p class="text-gray-500">Category 2</p>
-            <div class="mt-2">
-                <span class="text-sm text-gray-400">Tags: </span>
-                <span class="text-sm text-blue-500">Tag 3, Tag 4</span>
-            </div>
-            <div class="mt-4">
-                <p class="text-gray-500 text-sm">Total Students Enrolled: 60</p> <!-- Static data, replace later -->
-            </div>
-            <div class="mt-6 flex justify-between">
-                <a href="course_page.php?id=2" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">View</a>
-                <a href="update_course.php?id=2" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Update</a>
-                <a href="delete_course.php?id=2" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Delete</a>
-            </div>
-        </div>
     </div>
 
 </div>
