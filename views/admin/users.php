@@ -1,3 +1,63 @@
+<?php
+
+session_start();
+use Config\Connection;
+use Models\Admin;
+
+require __DIR__.'/../../vendor/autoload.php'; 
+
+
+$_SESSION["role"]="teacher";
+$_SESSION["user_id"]=1;
+$adminId = $_SESSION['user_id'] ;
+echo "the id is $adminId";
+if(isset($_SESSION["role"] )){
+   
+    echo "you are loged in Mr.".$_SESSION['role'];
+}else{
+    echo "You should not be in this page, Get OUT!!!";
+    header("Location: shouldLog.php");
+}
+
+
+$database = new Connection();
+$db = $database->getConnection();
+
+$adminObj= new Admin($db);
+
+$adminInfo = $adminObj->viewUsers(["id"=>$adminId]);
+
+$allTeachers = $adminObj->read(["role"=>"teacher"]);
+$allStudents = $adminObj->read(["role"=>"student"]);
+$pendingUsers = $adminObj->read(["status"=>"pending"]);
+
+$totalUsers = $adminObj->totalUsers();
+$totalTeachers = $adminObj->totalTeachers();
+$totalStudents = $adminObj->totalStudents();
+
+
+
+
+// var_dump($adminInfo);
+// var_dump($pendingCourses);
+// var_dump($textCourses);
+// var_dump($videoCourses);
+// var_dump($textCourses[0]['teacher_name']);
+
+
+
+if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
+    echo "<script type='text/javascript'>alert('" . $_SESSION['message'] . "');</script>";
+    unset($_SESSION['message']);
+}
+
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +91,7 @@
             <!-- Navigation Bar (Top Bar) -->
             <div class="bg-white shadow-md p-4 flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-800">Manage Users</h1>
-                <div class="text-gray-600">Welcome, Admin</div>
+                <div class="text-gray-600">Welcome, <?=strtoupper( $adminInfo[0]["name"] )?></div>
             </div>
 
             <!-- Add User Button -->
@@ -43,17 +103,17 @@
             <div class="grid grid-cols-3 gap-6 mb-8">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Total Users</h3>
-                    <p class="text-4xl font-bold text-gray-800">200</p>
+                    <p class="text-4xl font-bold text-gray-800"><?= $totalUsers?></p>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Total Students</h3>
-                    <p class="text-4xl font-bold text-gray-800">150</p>
+                    <p class="text-4xl font-bold text-gray-800"><?= $totalStudents?></p>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Total Teachers</h3>
-                    <p class="text-4xl font-bold text-gray-800">50</p>
+                    <p class="text-4xl font-bold text-gray-800"><?= $totalTeachers?></p>
                 </div>
             </div>
 
@@ -73,30 +133,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                        foreach($pendingUsers as $pendingUser):
+                        ?>
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-center">1</td>
-                            <td class="py-3 px-4 text-center">John Doe</td>
-                            <td class="py-3 px-4 text-center">Male</td>
-                            <td class="py-3 px-4 text-center">john.doe@example.com</td>
-                            <td class="py-3 px-4 text-center">Student</td>
-                            <td class="py-3 px-4 text-center">Pending</td>
+                            <td class="py-3 px-4 text-center"><?= $pendingUser["id"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $pendingUser["name"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $pendingUser["gender"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $pendingUser["email"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $pendingUser["role"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $pendingUser["status"]?></td>
                             <td class="py-3 px-4 text-center">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" onclick="acceptUser(1)">Accept</button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 ml-2" onclick="banUser(1)">Ban</button>
+                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"><a href="../../controllers/users/validateUserCtrl.php?id=<?= $pendingUser['id']?>">Accept</a></button>
+                                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 ml-2"><a href="../../controllers/users/banUserCtrl.php?id=<?= $pendingUser['id']?>">Ban</a></button>
                             </td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="py-3 px-4 text-center">2</td>
-                            <td class="py-3 px-4 text-center">Jane Smith</td>
-                            <td class="py-3 px-4 text-center">Female</td>
-                            <td class="py-3 px-4 text-center">jane.smith@example.com</td>
-                            <td class="py-3 px-4 text-center">Teacher</td>
-                            <td class="py-3 px-4 text-center">Pending</td>
-                            <td class="py-3 px-4 text-center">
-                                <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" onclick="acceptUser(2)">Accept</button>
-                                <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 ml-2" onclick="banUser(2)">Ban</button>
-                            </td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -122,28 +174,35 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <?php
+                        foreach($allStudents as $student):
+                        ?>
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-center">1</td>
-                            <td class="py-3 px-4 text-center">Alice Johnson</td>
-                            <td class="py-3 px-4 text-center">Female</td>
-                            <td class="py-3 px-4 text-center">alice.johnson@example.com</td>
-                            <td class="py-3 px-4 text-center">Student</td>
+                            <td class="py-3 px-4 text-center"><?= $student["id"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $student["name"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $student["gender"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $student["email"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $student["role"]?></td>
                             <td class="py-3 px-4 text-center">
-                                <span id="status-1" class="status-display">Accepted</span>
-                                <div id="status-modify-1" class="hidden">
-                                    <select id="status-select-1" class="border px-2 py-1 rounded-md">
-                                        <option value="Accepted">Accepted</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Rejected">Rejected</option>
+                                <span id="status-<?=$student['id']?>" class="status-display"><?=$student['status']?></span>
+                                <div id="status-modify-<?=$student['id']?>" class="hidden">
+                                <form action="../../controllers/users/modifyUserCtrl.php?id=<?= $student['id']?>" method="POST">
+                                    <select id="status-select-<?=$student['id']?>" name="user_status" class="border px-2 py-1 rounded-md">
+                                        <option value="Activated" <?= $student['status'] == "Activated" ? "selected" : '' ?>>Activated</option>
+                                        <option value="Pending"<?= $student['status'] == "Pending" ? "selected" : '' ?>>Pending</option>
+                                        <option value="Banned"<?= $student['status'] == "Banned" ? "selected" : '' ?>>Banned</option>
                                     </select>
-                                    <button class="bg-red-500 text-white px-2 py-1 rounded ml-2" onclick="cancelModifyStatus(1)">Cancel</button>
-                                    <button class="bg-green-500 text-white px-2 py-1 rounded ml-2" onclick="saveStatus(1)">Save</button>
+                                    <input type="button" class="bg-red-500 text-white px-2 py-1 rounded ml-2" onclick="cancelModifyStatus(<?=$student['id']?>)" value="Cancel">
+                                    <button type="submit" class="bg-green-500 text-white px-2 py-1 rounded ml-2">Save</button>
+                                    </form>
                                 </div>
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <button class="text-yellow-600 hover:underline" onclick="modifyStatus(1)">Modify Status</button>
+                                <button class="text-yellow-600 hover:underline" onclick="modifyStatus(<?=$student['id']?>)">Modify</button>
+                                <button class="text-red-600 hover:underline"><a href="../../controllers/users/deleteUserCtrl.php?id=<?= $student['id']?>">Delete</a></button>
                             </td>
                         </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -164,28 +223,35 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <?php
+                        foreach($allTeachers as $teacher):
+                        ?>
                         <tr class="border-b">
-                            <td class="py-3 px-4 text-center">1</td>
-                            <td class="py-3 px-4 text-center">John Doe</td>
-                            <td class="py-3 px-4 text-center">Male</td>
-                            <td class="py-3 px-4 text-center">john.doe@example.com</td>
-                            <td class="py-3 px-4 text-center">Teacher</td>
+                            <td class="py-3 px-4 text-center"><?= $teacher["id"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $teacher["name"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $teacher["gender"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $teacher["email"]?></td>
+                            <td class="py-3 px-4 text-center"><?= $teacher["role"]?></td>
                             <td class="py-3 px-4 text-center">
-                                <span id="status-2" class="status-display">Accepted</span>
-                                <div id="status-modify-2" class="hidden">
-                                    <select id="status-select-2" class="border px-2 py-1 rounded-md">
-                                        <option value="Accepted">Accepted</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Rejected">Rejected</option>
+                                <span id="status-<?= $teacher['id']?>" class="status-display"><?= $teacher["status"]?></span>
+                                <div id="status-modify-<?= $teacher['id']?>" class="hidden">
+                                <form action="../../controllers/users/modifyUserCtrl.php?id=<?= $teacher['id']?>" method="POST">
+                                    <select id="status-select-<?= $teacher['id']?>" name="user_status" class="border px-2 py-1 rounded-md">
+                                        <option value="activated" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Activated</option>
+                                        <option value="pending" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Pending</option>
+                                        <option value="banned" <?= $teacher['status'] == "Activated" ? "selected" : '' ?>>Banned</option>
                                     </select>
-                                    <button class="bg-red-500 text-white px-2 py-1 rounded ml-2" onclick="cancelModifyStatus(2)">Cancel</button>
-                                    <button class="bg-green-500 text-white px-2 py-1 rounded ml-2" onclick="saveStatus(2)">Save</button>
+                                    <button type="button" class="bg-red-500 text-white px-2 py-1 rounded ml-2" onclick="cancelModifyStatus(<?= $teacher['id']?>)">Cancel</button>
+                                    <button type= "submit" class="bg-green-500 text-white px-2 py-1 rounded ml-2" onclick="saveStatus(<?= $teacher['id']?>)">Save</button>
+                                </form>
                                 </div>
                             </td>
                             <td class="py-3 px-4 text-center">
-                                <button class="text-yellow-600 hover:underline" onclick="modifyStatus(2)">Modify Status</button>
+                                <button class="text-yellow-600 hover:underline" onclick="modifyStatus(<?= $teacher['id']?>)">Modify</button>
+                                <button class="text-red-600 hover:underline" "><a href="../../controllers/users/deleteUserCtrl.php?id=<?= $teacher['id']?>">Delete</a></button>
                             </td>
                         </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -228,24 +294,6 @@
             statusModify.classList.add('hidden');
         }
 
-        function saveStatus(userId) {
-            const statusSelect = document.getElementById(`status-select-${userId}`);
-            const statusDisplay = document.getElementById(`status-${userId}`);
-            const statusModify = document.getElementById(`status-modify-${userId}`);
-
-            // Save the new status and hide modify input
-            statusDisplay.textContent = statusSelect.value;
-            statusDisplay.classList.remove('hidden');
-            statusModify.classList.add('hidden');
-        }
-
-        function acceptUser(userId) {
-            alert(`User ${userId} accepted!`);
-        }
-
-        function banUser(userId) {
-            alert(`User ${userId} banned!`);
-        }
     </script>
 
 </body>
