@@ -7,6 +7,15 @@ if (isset($_SESSION['message'])){
 unset($_SESSION['message']);
 }
 
+if (isset($_SESSION['role'])&& isset($_SESSION['role']) ){
+    echo $_SESSION['role'];
+    echo $_SESSION['user_id'];
+}else{
+    echo "there is no session set in this platform";
+}
+
+
+
 
 ?>
 

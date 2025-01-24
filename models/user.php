@@ -24,7 +24,10 @@ abstract class User {
 
     }
 
-    abstract public function viewUsers($conditions);
+     // View Users
+     public function viewUsers($conditions) {
+        return $this->crud->read($conditions, 'users'); 
+    }
 
     public function register($data) {
         // Hash the password using Argon2

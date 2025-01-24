@@ -2,16 +2,9 @@
 <?php
 session_start();
 
-$_SESSION["role"]="teacher";
-if(isset($_SESSION["role"] )){
-   
-    echo "you are loged in Mr.".$_SESSION['role'];
-}else{
-    echo "You should not be in this page, Get OUT!!!";
-    header("Location: shouldLog.php");
-}
 use Config\Connection;
 use Models\Course;
+use Models\Admin;
 
 require __DIR__.'/../../vendor/autoload.php'; 
 
@@ -19,6 +12,32 @@ $database = new Connection();
 $db = $database->getConnection();
 
 $courseObj= new Course($db);
+$adminObj =new Admin($db); 
+
+
+//for testing//
+$_SESSION['role']= "Admin";
+$_SESSION['user_id']= 1;
+//end for testing
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == "Admin"){
+    $adminInfo = $adminObj->viewUsers(["id"=>$_SESSION['user_id']]);
+    $status = $adminInfo[0]['status'];
+    $role = $adminInfo[0]['role'];
+    var_dump($status) ;
+    var_dump($role) ;
+    if($status == "Activated"){
+        echo "you can log in mr Admin";
+    }else{
+        echo "yes you are an admin but you should be accepted by the admin";
+    }
+}else{
+
+    echo "you should not be in this page you are just a ".$_SESSION['role'];
+}
+
+
+
 $textCourses = $courseObj->read();
 $videoCourses = $courseObj->read("video");
 $pendingCourses= $courseObj->readCertainCourses(["course_status"=>"pending"]);
@@ -73,7 +92,11 @@ if(isset($_SESSION['message']) && !empty($_SESSION['message'])){
             <!-- Navigation Bar (Top Bar) -->
             <div class="bg-white shadow-md p-4 flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-800">Manage Courses</h1>
-                <div class="text-gray-600">Welcome, Admin</div>
+                <div class=" flex gap-4 items-center text-gray-600">
+                <span>Welcome, <?= strtoupper($adminInfo[0]['name']) ?></span>
+                <span><img src="<?= $adminInfo[0]['photo']?>" alt="Admin profile photo" class="rounded-full w-10 h-10" ></span>
+                <button class="bg-red-500 py-1 px-2 rounded-md text-white"><a href="../../controllers/authentication/logoutCtrl.php">Logout</a></button>
+                </div>
             </div>
 
             <!-- Statistics Cards -->

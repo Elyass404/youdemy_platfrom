@@ -16,9 +16,6 @@ class Student extends User {
         $this->db = $db;
     }
 
-    public function viewUsers($conditions){
-        return $this->crud->read($conditions, 'users');
-    }
 
     public function inProgressCourses($studentId) {
         // SQL query to join enrolled_courses with courses and get all necessary information

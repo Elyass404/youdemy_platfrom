@@ -75,7 +75,7 @@ $allCourses = $courseObj->readCertainCourses();
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Course Card 1 -->
                  <?php
-                 foreach($allCourses as $course)?>
+                 foreach($allCourses as $course):?>
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
                     <img src="<?=$course['featured_image']?>" alt="Course Image" class="w-full h-40 object-cover">
                     <div class="p-4">
@@ -86,6 +86,7 @@ $allCourses = $courseObj->readCertainCourses();
                         <button class="mt-4 w-full py-2 bg-blue-500 text-white rounded-md"><a href="../../controllers/users/enrollCtrl.php?id=<?= $course['id']?>">Enrolle Course</a></button>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>

@@ -1,9 +1,23 @@
 
 <?php
 session_start();
-$_SESSION["name"]="elyass";
-// session_unset();
-// session_destroy();
+
+$_SESSION['role']= "teacher";
+$_SESSION['user_id']= 2;
+
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == "admin"){
+    $teacherInfo = $teacherObj->viewUsers(["id"=>$_SESSION['user_id']]);
+    $status = $teacherInfo[0]['status'];
+    var_dump($status) ;
+    if($status == "Activated"){
+        echo "you can log in mr teacher";
+        echo $_SESSION['role'];
+    }
+}else{
+
+    echo "you should not be in this page you are just a".$_SESSION['role'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

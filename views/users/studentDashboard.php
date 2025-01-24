@@ -5,9 +5,10 @@ use Models\Course;
 use Models\Student;
 use Models\Tag;
 
-$studentId=$_SESSION['student_id']=2;
-
 require __DIR__.'/../../vendor/autoload.php'; 
+
+
+
 
 $database = new Connection();
 $db = $database->getConnection();
@@ -16,7 +17,7 @@ $studentObj = new Student($db);
 $courseObj = new Course($db);
 $tagObj = new Tag($db);
 
-$studentId = $_SESSION['student_id'];
+$studentId = $_SESSION['user_id'];
 
 $totalCourses = $studentObj->totalCourses($studentId);
 $totalInProgressCourses = $studentObj->totalInProgressCourses($studentId);
@@ -26,6 +27,30 @@ $incompletedCourses=$studentObj->inProgressCourses($studentId);
 $completedCourses=$studentObj->completedCourses($studentId);
 
 $studentInfo=$studentObj->viewUsers(["id"=>$studentId]);
+
+
+//for testing
+$_SESSION['role']= "teacher";
+$_SESSION['user_id']= 2;
+//end for testing 
+
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == "student"){
+    $studentInfo = $studentObj->viewUsers(["id"=>$_SESSION['user_id']]);
+    $status = $studentInfo[0]['status'];
+    $role = $studentInfo[0]['role'];
+    var_dump($status) ;
+    var_dump($role) ;
+    if($status == "Activated"){
+        echo "you can log in mr student";
+    }else{
+        echo "yes you are a student but you should be accepted by the admin";
+    }
+}else{
+
+    echo "you should not be in this page you are just a ".$_SESSION['role'];
+}
+
 
 
 // var_dump($studentInfo);

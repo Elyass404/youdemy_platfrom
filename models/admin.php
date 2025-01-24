@@ -16,10 +16,7 @@ class Admin extends User {
         $this->db = $db;
     }
 
-    // View Users
-    public function viewUsers($conditions) {
-        return $this->crud->read($conditions, 'users'); 
-    }
+   
 
     // Validate User 
     public function validateUser($userId) {

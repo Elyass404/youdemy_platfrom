@@ -5,8 +5,6 @@ use Models\Course;
 use Models\Teacher;
 use Models\Tag;
 
-$_SESSION['teacher_id']=2;
-
 require __DIR__.'/../../vendor/autoload.php'; 
 
 $database = new Connection();
@@ -16,7 +14,26 @@ $teacherObj = new Teacher($db);
 $courseObj = new Course($db);
 $tagObj = new Tag($db);
 
-$teacherId = $_SESSION['teacher_id'];
+
+$_SESSION['role']= "teacher";
+$_SESSION['user_id']= 2;
+
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == "teacher"){
+    $teacherInfo = $teacherObj->viewUsers(["id"=>$_SESSION['user_id']]);
+    $status = $teacherInfo[0]['status'];
+    $role = $teacherInfo[0]['role'];
+    var_dump($status) ;
+    var_dump($role) ;
+    if($status == "Activated"){
+        echo "you can log in mr teacher";
+    }else{
+        echo "yes you are a teacher but you should be accepted by the admin";
+    }
+}else{
+
+    echo "you should not be in this page you are just a".$_SESSION['role'];
+}
 
 $totalOwnCourses = $teacherObj->totalOwnCourses($teacherId);
 $pendingOwnCourses = $teacherObj->pendingOwnCourses($teacherId);

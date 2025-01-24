@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 $_SESSION["role"]="teacher";
 if(isset($_SESSION["role"] )){
    
