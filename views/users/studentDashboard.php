@@ -30,8 +30,8 @@ $studentInfo=$studentObj->viewUsers(["id"=>$studentId]);
 
 
 //for testing
-$_SESSION['role']= "teacher";
-$_SESSION['user_id']= 2;
+// $_SESSION['role']= "teacher";
+// $_SESSION['user_id']= 2;
 //end for testing 
 
 
@@ -41,14 +41,15 @@ if(isset($_SESSION['role']) && $_SESSION['role'] == "student"){
     $role = $studentInfo[0]['role'];
     var_dump($status) ;
     var_dump($role) ;
-    if($status == "Activated"){
-        echo "you can log in mr student";
-    }else{
-        echo "yes you are a student but you should be accepted by the admin";
+    if($status != "Activated"){
+        $_SESSION["message"]= "you are a student but you should be accepted by the admin";
+        header("Location: ../../views/users/preventingPage.php");
+        exit;
     }
 }else{
-
-    echo "you should not be in this page you are just a ".$_SESSION['role'];
+    $_SESSION["message"]= "you should not be in this page you are a ".$_SESSION['role'];
+    header("Location: ../../views/users/preventingPage.php");
+    exit;
 }
 
 

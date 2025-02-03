@@ -6,12 +6,14 @@ if (isset($_SESSION['message'])){
  echo ( $_SESSION['message']);
 unset($_SESSION['message']);
 }
+// $_SESSION['role']="teacher";
+// $_SESSION['user_id']="2";
+// unset($_SESSION);
 
-if (isset($_SESSION['role'])&& isset($_SESSION['role']) ){
-    echo $_SESSION['role'];
-    echo $_SESSION['user_id'];
-}else{
-    echo "there is no session set in this platform";
+
+if (isset($_SESSION['role']) && isset($_SESSION['user_id']) ){
+    header("Location: ../../views/users/courses_catalog.php");
+    exit;
 }
 
 
